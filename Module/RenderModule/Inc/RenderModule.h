@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <memory>
+#include <map>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -334,7 +335,13 @@ private:
 
 
 	/**
-	 * @brief 사운드 리소스의 캐시입니다.
+	 * @brief 리소스의 캐시입니다.
 	 */
 	static std::array<std::unique_ptr<IResource>, MAX_RESOURCE_SIZE> cache;
+
+
+	/**
+	 * @brief 내부에서만 사용할 전역 리소스 캐시입니다.
+	 */
+	static std::map<std::string, IResource*> globalResources;
 };

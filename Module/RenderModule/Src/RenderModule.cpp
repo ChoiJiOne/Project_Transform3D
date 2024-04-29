@@ -5,6 +5,7 @@
 #include <imgui_impl_opengl3.h>
 
 #include "Assertion.h"
+#include "Shader.h"
 #include "RenderModule.h"
 
 bool RenderModule::bIsInit = false;
@@ -15,6 +16,7 @@ Mat4x4 RenderModule::ortho;
 wchar_t RenderModule::lastErrorMessage[MAX_BUFFER_SIZE];
 uint32_t RenderModule::cacheSize = 0;
 std::array<std::unique_ptr<IResource>, RenderModule::MAX_RESOURCE_SIZE> RenderModule::cache;
+std::map<std::string, IResource*> RenderModule::globalResources;
 
 /**
  * @brief OpenGL의 버전입니다.
@@ -59,6 +61,8 @@ RenderModule::Errors RenderModule::Init(HWND windowHandle)
 		SetLastErrorMessage(L"Failed to Initialize IMGUI for OpenGL.");
 		return Errors::ERR_IMGUI;
 	}
+
+	globalResources.insert({ "TileMapGenerator", RenderModule::CreateResource<Shader>("Resource/Shader/TileMapGenerator.comp") });
 	
 	bIsInit = true;
 	return Errors::OK;
