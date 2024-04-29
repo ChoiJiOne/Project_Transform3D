@@ -151,6 +151,7 @@ endif(MINGW)
 
 add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_DLL_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
 target_include_directories(zlib PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_library(zlibstatic STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
 target_include_directories(zlibstatic PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 set_property(TARGET zlibstatic PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -194,27 +195,4 @@ if(NOT SKIP_INSTALL_FILES AND NOT SKIP_INSTALL_ALL )
 endif()
 if(NOT SKIP_INSTALL_FILES AND NOT SKIP_INSTALL_ALL )
     install(FILES ${ZLIB_PC} DESTINATION "${INSTALL_PKGCONFIG_DIR}")
-endif()
-
-#============================================================================
-# Example binaries
-#============================================================================
-if(ZLIB_BUILD_EXAMPLES)
-    add_executable(example test/example.c)
-    target_link_libraries(example zlib)
-    add_test(example example)
-
-    add_executable(minigzip test/minigzip.c)
-    target_link_libraries(minigzip zlib)
-
-    if(HAVE_OFF64_T)
-        add_executable(example64 test/example.c)
-        target_link_libraries(example64 zlib)
-        set_target_properties(example64 PROPERTIES COMPILE_FLAGS "-D_FILE_OFFSET_BITS=64")
-        add_test(example64 example64)
-
-        add_executable(minigzip64 test/minigzip.c)
-        target_link_libraries(minigzip64 zlib)
-        set_target_properties(minigzip64 PROPERTIES COMPILE_FLAGS "-D_FILE_OFFSET_BITS=64")
-    endif()
 endif()
