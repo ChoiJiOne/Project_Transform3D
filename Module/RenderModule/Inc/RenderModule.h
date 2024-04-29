@@ -239,6 +239,27 @@ public:
 
 
 	/**
+	 * @brief 렌더 모듈 내에서 사용하는 전역 리소스를 얻습니다.
+	 * 
+	 * @param key 전역 리소스의 키 값입니다.
+	 * 
+	 * @return 전역 리소스의 키 값에 대응하는 리소스의 포인터를 반환합니다.
+	 */
+	template <typename TResource>
+	static TResource* GetGlobalResource(const std::string& key)
+	{
+		auto iter = globalResources.find(key);
+		if (iter == globalResources.end())
+		{
+			return nullptr;
+		}
+
+		TResource* resource = reinterpret_cast<TResource*>(iter->second);
+		return resource;
+	}
+
+
+	/**
 	 * @brief 렌더 모듈의 가장 최근 에러 메시지를 얻습니다.
 	 *
 	 * @return 렌더 모듈의 가장 최근에 발생한 에러 메시지의 포인터 값을 반환합니다.
