@@ -11,4 +11,4 @@ add_subdirectory(Remotery)
 add_subdirectory(stb)
 add_subdirectory(zlib)
 
-set_target_properties(cgltf glad imgui jsoncpp lua miniaudio Remotery stb zlibstatic PROPERTIES FOLDER "ThirdParty")
+set_target_properties(cgltf glad imgui jsoncpp lua miniaudio Remotery stb zlib zlibstatic PROPERTIES FOLDER "ThirdParty")
