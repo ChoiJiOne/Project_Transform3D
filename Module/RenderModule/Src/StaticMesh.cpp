@@ -3,6 +3,12 @@
 #include "Assertion.h"
 #include "StaticMesh.h"
 
+template StaticMesh<VertexPosition3D>;
+template StaticMesh<VertexPositionColor3D>;
+template StaticMesh<VertexPositionUv3D>;
+template StaticMesh<VertexPositionNormal3D>;
+template StaticMesh<VertexPositionNormalUv3D>;
+
 template<>
 StaticMesh<VertexPosition3D>::StaticMesh(const std::vector<VertexPosition3D>& vertices, const std::vector<uint32_t>& indices)
 	: vertices_(vertices)
