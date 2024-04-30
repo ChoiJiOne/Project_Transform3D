@@ -5,8 +5,6 @@ project(zlib C)
 
 set(VERSION "1.3.1")
 
-option(ZLIB_BUILD_EXAMPLES "Enable Zlib Examples" ON)
-
 set(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation directory for executables")
 set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE PATH "Installation directory for libraries")
 set(INSTALL_INC_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "Installation directory for headers")
