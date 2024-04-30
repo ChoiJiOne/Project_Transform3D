@@ -45,7 +45,8 @@ public:
 	 * @param outVertices 생성한 원기둥의 정점 목록입니다.
 	 * @param outIndices  생성한 원기둥의 인덱스 목록입니다.
 	 */
-	static void CreateCylinder(float radius, float height, uint32_t tessellation, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices);
+	template <typename VertexType>
+	static void CreateCylinder(float radius, float height, uint32_t tessellation, std::vector<VertexType>& outVertices, std::vector<uint32_t>& outIndices);
 
 
 private:
@@ -59,5 +60,6 @@ private:
 	 * @param outVertices 생성한 원기둥 상단/하단의 정점 목록입니다.
 	 * @param outIndices  생성한 원기둥 상단/하단의 인덱스 목록입니다.
 	 */
-	static void CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices);
+	template <typename VertexType>
+	static void CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<VertexType>& outVertices, std::vector<uint32_t>& outIndices);
 };

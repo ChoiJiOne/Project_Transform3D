@@ -379,6 +379,284 @@ void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::v
 	}
 }
 
+template<>
+void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<VertexPosition3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	for (size_t index = 0; index < tessellation - 2; index++)
+	{
+		size_t i1 = (index + 1) % tessellation;
+		size_t i2 = (index + 2) % tessellation;
+
+		if (bIsTop)
+		{
+			std::swap(i1, i2);
+		}
+
+		const size_t vbase = outVertices.size();
+		outIndices.push_back(vbase + 0);
+		outIndices.push_back(vbase + i2);
+		outIndices.push_back(vbase + i1);
+	}
+
+	Vec3f normal(0.0f, 1.0f, 0.0f);
+
+	if (!bIsTop)
+	{
+		normal = Vec3f(0.0f, -1.0f, 0.0f);
+	}
+
+	for (size_t index = 0; index < tessellation; ++index)
+	{
+		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
+		float dx = MathModule::Sin(angle);
+		float dz = MathModule::Cos(angle);
+
+		Vec3f position = Vec3f(dx * radius, normal.y * height, dz * radius);
+
+		outVertices.push_back(VertexPosition3D(position));
+	}
+}
+
+template<>
+void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<VertexPositionUv3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	for (size_t index = 0; index < tessellation - 2; index++)
+	{
+		size_t i1 = (index + 1) % tessellation;
+		size_t i2 = (index + 2) % tessellation;
+
+		if (bIsTop)
+		{
+			std::swap(i1, i2);
+		}
+
+		const size_t vbase = outVertices.size();
+		outIndices.push_back(vbase + 0);
+		outIndices.push_back(vbase + i2);
+		outIndices.push_back(vbase + i1);
+	}
+
+	Vec3f normal(0.0f, 1.0f, 0.0f);
+	Vec2f textureScale(-0.5f, -0.5f);
+
+	if (!bIsTop)
+	{
+		normal = Vec3f(0.0f, -1.0f, 0.0f);
+		textureScale = Vec2f(0.5f, -0.5f);
+	}
+
+	for (size_t index = 0; index < tessellation; ++index)
+	{
+		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
+		float dx = MathModule::Sin(angle);
+		float dz = MathModule::Cos(angle);
+
+		Vec3f position = Vec3f(dx * radius, normal.y * height, dz * radius);
+		Vec2f uv = Vec2f(dx, dz) * textureScale + Vec2f(0.5f, 0.5f);
+
+		outVertices.push_back(VertexPositionUv3D(position, Vec2f(uv.x, 1.0f - uv.y)));
+	}
+}
+
+template<>
+void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<VertexPositionNormal3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	for (size_t index = 0; index < tessellation - 2; index++)
+	{
+		size_t i1 = (index + 1) % tessellation;
+		size_t i2 = (index + 2) % tessellation;
+
+		if (bIsTop)
+		{
+			std::swap(i1, i2);
+		}
+
+		const size_t vbase = outVertices.size();
+		outIndices.push_back(vbase + 0);
+		outIndices.push_back(vbase + i2);
+		outIndices.push_back(vbase + i1);
+	}
+
+	Vec3f normal(0.0f, 1.0f, 0.0f);
+	Vec2f textureScale(-0.5f, -0.5f);
+
+	if (!bIsTop)
+	{
+		normal = Vec3f(0.0f, -1.0f, 0.0f);
+	}
+
+	for (size_t index = 0; index < tessellation; ++index)
+	{
+		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
+		float dx = MathModule::Sin(angle);
+		float dz = MathModule::Cos(angle);
+
+		Vec3f position = Vec3f(dx * radius, normal.y * height, dz * radius);
+
+		outVertices.push_back(VertexPositionNormal3D(position, normal));
+	}
+}
+
+template<>
+void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	for (size_t index = 0; index < tessellation - 2; index++)
+	{
+		size_t i1 = (index + 1) % tessellation;
+		size_t i2 = (index + 2) % tessellation;
+
+		if (bIsTop)
+		{
+			std::swap(i1, i2);
+		}
+
+		const size_t vbase = outVertices.size();
+		outIndices.push_back(vbase + 0);
+		outIndices.push_back(vbase + i2);
+		outIndices.push_back(vbase + i1);
+	}
+
+	Vec3f normal(0.0f, 1.0f, 0.0f);
+	Vec2f textureScale(-0.5f, -0.5f);
+
+	if (!bIsTop)
+	{
+		normal = Vec3f(0.0f, -1.0f, 0.0f);
+		textureScale = Vec2f(0.5f, -0.5f);
+	}
+
+	for (size_t index = 0; index < tessellation; ++index)
+	{
+		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
+		float dx = MathModule::Sin(angle);
+		float dz = MathModule::Cos(angle);
+
+		Vec3f position = Vec3f(dx * radius, normal.y * height, dz * radius);
+		Vec2f uv = Vec2f(dx, dz) * textureScale + Vec2f(0.5f, 0.5f);
+
+		outVertices.push_back(VertexPositionNormalUv3D(position, normal, Vec2f(uv.x, 1.0f - uv.y)));
+	}
+}
+
+template<>
+void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tessellation, std::vector<VertexPosition3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	CHECK(tessellation >= 3);
+
+	outVertices.resize(0);
+	outIndices.resize(0);
+
+	height *= 0.5f;
+
+	Vec3f topOffset(0.0f, height, 0.0f);
+	uint32_t stride = tessellation + 1;
+
+	for (uint32_t index = 0; index <= tessellation; ++index)
+	{
+		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
+		float dx = MathModule::Sin(angle);
+		float dz = MathModule::Cos(angle);
+
+		Vec3f normal(dx, 0.0f, dz);
+		Vec3f sideOffset(normal.x * radius, normal.y * radius, normal.z * radius);
+		
+		outVertices.push_back(VertexPosition3D(sideOffset + topOffset));
+		outVertices.push_back(VertexPosition3D(sideOffset - topOffset));
+
+		outIndices.push_back((index * 2 + 0));
+		outIndices.push_back((index * 2 + 1));
+		outIndices.push_back((index * 2 + 2) % (stride * 2));
+
+		outIndices.push_back((index * 2 + 1));
+		outIndices.push_back((index * 2 + 3) % (stride * 2));
+		outIndices.push_back((index * 2 + 2) % (stride * 2));
+	}
+
+	CreateCylinderCap(radius, height, tessellation, true, outVertices, outIndices);
+	CreateCylinderCap(radius, height, tessellation, false, outVertices, outIndices);
+}
+
+template<>
+void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tessellation, std::vector<VertexPositionUv3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	CHECK(tessellation >= 3);
+
+	outVertices.resize(0);
+	outIndices.resize(0);
+
+	height *= 0.5f;
+
+	Vec3f topOffset(0.0f, height, 0.0f);
+	uint32_t stride = tessellation + 1;
+
+	for (uint32_t index = 0; index <= tessellation; ++index)
+	{
+		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
+		float dx = MathModule::Sin(angle);
+		float dz = MathModule::Cos(angle);
+
+		Vec3f normal(dx, 0.0f, dz);
+		Vec3f sideOffset(normal.x * radius, normal.y * radius, normal.z * radius);
+
+		Vec2f uv(static_cast<float>(index) / static_cast<float>(tessellation), 0.0f);
+		Vec2f uv0 = uv + Vec2f(0.0f, 0.0f);
+		Vec2f uv1 = uv + Vec2f(0.0f, 1.0f);
+
+		outVertices.push_back(VertexPositionUv3D(sideOffset + topOffset, Vec2f(uv0.x, 1.0f - uv0.y)));
+		outVertices.push_back(VertexPositionUv3D(sideOffset - topOffset, Vec2f(uv1.x, 1.0f - uv1.y)));
+
+		outIndices.push_back((index * 2 + 0));
+		outIndices.push_back((index * 2 + 1));
+		outIndices.push_back((index * 2 + 2) % (stride * 2));
+
+		outIndices.push_back((index * 2 + 1));
+		outIndices.push_back((index * 2 + 3) % (stride * 2));
+		outIndices.push_back((index * 2 + 2) % (stride * 2));
+	}
+
+	CreateCylinderCap(radius, height, tessellation, true, outVertices, outIndices);
+	CreateCylinderCap(radius, height, tessellation, false, outVertices, outIndices);
+}
+
+template<>
+void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tessellation, std::vector<VertexPositionNormal3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	CHECK(tessellation >= 3);
+
+	outVertices.resize(0);
+	outIndices.resize(0);
+
+	height *= 0.5f;
+
+	Vec3f topOffset(0.0f, height, 0.0f);
+	uint32_t stride = tessellation + 1;
+
+	for (uint32_t index = 0; index <= tessellation; ++index)
+	{
+		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
+		float dx = MathModule::Sin(angle);
+		float dz = MathModule::Cos(angle);
+
+		Vec3f normal(dx, 0.0f, dz);
+		Vec3f sideOffset(normal.x * radius, normal.y * radius, normal.z * radius);
+		
+		outVertices.push_back(VertexPositionNormal3D(sideOffset + topOffset, normal));
+		outVertices.push_back(VertexPositionNormal3D(sideOffset - topOffset, normal));
+
+		outIndices.push_back((index * 2 + 0));
+		outIndices.push_back((index * 2 + 1));
+		outIndices.push_back((index * 2 + 2) % (stride * 2));
+
+		outIndices.push_back((index * 2 + 1));
+		outIndices.push_back((index * 2 + 3) % (stride * 2));
+		outIndices.push_back((index * 2 + 2) % (stride * 2));
+	}
+
+	CreateCylinderCap(radius, height, tessellation, true, outVertices, outIndices);
+	CreateCylinderCap(radius, height, tessellation, false, outVertices, outIndices);
+}
+
+template<>
 void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tessellation, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices)
 {
 	CHECK(tessellation >= 3);
@@ -418,44 +696,4 @@ void GeometryGenerator::CreateCylinder(float radius, float height, uint32_t tess
 
 	CreateCylinderCap(radius, height, tessellation, true, outVertices, outIndices);
 	CreateCylinderCap(radius, height, tessellation, false, outVertices, outIndices);
-}
-
-void GeometryGenerator::CreateCylinderCap(float radius, float height, uint32_t tessellation, bool bIsTop, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices)
-{
-	for (size_t index = 0; index < tessellation - 2; index++)
-	{
-		size_t i1 = (index + 1) % tessellation;
-		size_t i2 = (index + 2) % tessellation;
-
-		if (bIsTop)
-		{
-			std::swap(i1, i2);
-		}
-
-		const size_t vbase = outVertices.size();
-		outIndices.push_back(vbase + 0);
-		outIndices.push_back(vbase + i2);
-		outIndices.push_back(vbase + i1);
-	}
-
-	Vec3f normal(0.0f, 1.0f, 0.0f);
-	Vec2f textureScale(-0.5f, -0.5f);
-
-	if (!bIsTop)
-	{
-		normal = Vec3f(0.0f, -1.0f, 0.0f);
-		textureScale = Vec2f(0.5f, -0.5f);
-	}
-
-	for (size_t index = 0; index < tessellation; ++index)
-	{
-		float angle = TwoPi * static_cast<float>(index) / static_cast<float>(tessellation);
-		float dx = MathModule::Sin(angle);
-		float dz = MathModule::Cos(angle);
-
-		Vec3f position = Vec3f(dx * radius, normal.y * height, dz * radius);
-		Vec2f uv = Vec2f(dx, dz) * textureScale + Vec2f(0.5f, 0.5f);
-
-		outVertices.push_back(VertexPositionNormalUv3D(position, normal, Vec2f(uv.x, 1.0f - uv.y)));
-	}
 }
