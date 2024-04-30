@@ -32,7 +32,8 @@ public:
 	 * @param outVertices 생성한 구의 정점 목록입니다.
 	 * @param outIndices  생성한 구의 인덱스 목록입니다.
 	 */
-	static void CreateSphere(float radius, uint32_t tessellation, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices);
+	template <typename VertexType>
+	static void CreateSphere(float radius, uint32_t tessellation, std::vector<VertexType>& outVertices, std::vector<uint32_t>& outIndices);
 
 
 	/**

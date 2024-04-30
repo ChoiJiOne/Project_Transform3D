@@ -192,6 +192,145 @@ void GeometryGenerator::CreateCube(const Vec3f& size, std::vector<VertexPosition
 	}
 }
 
+template<>
+void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::vector<VertexPosition3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	CHECK(tessellation >= 3);
+
+	outVertices.resize(0);
+	outIndices.resize(0);
+
+	const uint32_t verticalSegments = tessellation;
+	const uint32_t horizontalSegments = tessellation * 2;
+
+	for (uint32_t vertical = 0; vertical <= verticalSegments; ++vertical)
+	{
+		float latitude = Pi * (static_cast<float>(vertical) / static_cast<float>(verticalSegments)) - PiDiv2;
+		float dy = MathModule::Sin(latitude);
+		float dxz = MathModule::Cos(latitude);
+
+		for (uint32_t horizon = 0; horizon <= horizontalSegments; ++horizon)
+		{
+			float longitude = TwoPi * static_cast<float>(horizon) / static_cast<float>(horizontalSegments);
+			float dx = dxz * MathModule::Sin(longitude);
+			float dz = dxz * MathModule::Cos(longitude);
+			Vec3f position(radius * dx, radius * dy, radius * dz);
+
+			outVertices.push_back(VertexPosition3D(position));
+		}
+	}
+
+	uint32_t stride = horizontalSegments + 1;
+	for (uint32_t vertical = 0; vertical < verticalSegments; ++vertical)
+	{
+		for (uint32_t horizon = 0; horizon <= horizontalSegments; ++horizon)
+		{
+			outIndices.push_back((vertical + 0) * stride + (horizon + 0) % stride);
+			outIndices.push_back((vertical + 0) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 0) % stride);
+
+			outIndices.push_back((vertical + 0) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 0) % stride);
+		}
+	}
+}
+
+template<>
+void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::vector<VertexPositionUv3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	CHECK(tessellation >= 3);
+
+	outVertices.resize(0);
+	outIndices.resize(0);
+
+	const uint32_t verticalSegments = tessellation;
+	const uint32_t horizontalSegments = tessellation * 2;
+
+	for (uint32_t vertical = 0; vertical <= verticalSegments; ++vertical)
+	{
+		float v = 1.0f - static_cast<float>(vertical) / static_cast<float>(verticalSegments);
+		float latitude = Pi * (static_cast<float>(vertical) / static_cast<float>(verticalSegments)) - PiDiv2;
+		float dy = MathModule::Sin(latitude);
+		float dxz = MathModule::Cos(latitude);
+
+		for (uint32_t horizon = 0; horizon <= horizontalSegments; ++horizon)
+		{
+			float u = static_cast<float>(horizon) / static_cast<float>(horizontalSegments);
+			float longitude = TwoPi * static_cast<float>(horizon) / static_cast<float>(horizontalSegments);
+			float dx = dxz * MathModule::Sin(longitude);
+			float dz = dxz * MathModule::Cos(longitude);
+
+			Vec3f position(radius * dx, radius * dy, radius * dz);
+			Vec2f uv(u, 1.0f - v);
+
+			outVertices.push_back(VertexPositionUv3D(position, uv));
+		}
+	}
+
+	uint32_t stride = horizontalSegments + 1;
+	for (uint32_t vertical = 0; vertical < verticalSegments; ++vertical)
+	{
+		for (uint32_t horizon = 0; horizon <= horizontalSegments; ++horizon)
+		{
+			outIndices.push_back((vertical + 0) * stride + (horizon + 0) % stride);
+			outIndices.push_back((vertical + 0) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 0) % stride);
+
+			outIndices.push_back((vertical + 0) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 0) % stride);
+		}
+	}
+}
+
+template<>
+void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::vector<VertexPositionNormal3D>& outVertices, std::vector<uint32_t>& outIndices)
+{
+	CHECK(tessellation >= 3);
+
+	outVertices.resize(0);
+	outIndices.resize(0);
+
+	const uint32_t verticalSegments = tessellation;
+	const uint32_t horizontalSegments = tessellation * 2;
+
+	for (uint32_t vertical = 0; vertical <= verticalSegments; ++vertical)
+	{
+		float latitude = Pi * (static_cast<float>(vertical) / static_cast<float>(verticalSegments)) - PiDiv2;
+		float dy = MathModule::Sin(latitude);
+		float dxz = MathModule::Cos(latitude);
+
+		for (uint32_t horizon = 0; horizon <= horizontalSegments; ++horizon)
+		{
+			float longitude = TwoPi * static_cast<float>(horizon) / static_cast<float>(horizontalSegments);
+			float dx = dxz * MathModule::Sin(longitude);
+			float dz = dxz * MathModule::Cos(longitude);
+
+			Vec3f position(radius * dx, radius * dy, radius * dz);
+			Vec3f normal(dx, dy, dz);
+
+			outVertices.push_back(VertexPositionNormal3D(position, normal));
+		}
+	}
+
+	uint32_t stride = horizontalSegments + 1;
+	for (uint32_t vertical = 0; vertical < verticalSegments; ++vertical)
+	{
+		for (uint32_t horizon = 0; horizon <= horizontalSegments; ++horizon)
+		{
+			outIndices.push_back((vertical + 0) * stride + (horizon + 0) % stride);
+			outIndices.push_back((vertical + 0) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 0) % stride);
+
+			outIndices.push_back((vertical + 0) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 1) % stride);
+			outIndices.push_back((vertical + 1) * stride + (horizon + 0) % stride);
+		}
+	}
+}
+
+template<>
 void GeometryGenerator::CreateSphere(float radius, uint32_t tessellation, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices)
 {
 	CHECK(tessellation >= 3);
