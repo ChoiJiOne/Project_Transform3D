@@ -20,8 +20,8 @@ public:
 	 * @param outVertices 생성한 큐브의 정점 목록입니다.
 	 * @param outIndices  생성한 큐브의 인덱스 목록입니다.
 	 */
-	template <typename T>
-	static void CreateCube(const Vec3f& size, std::vector<T>& outVertices, std::vector<uint32_t>& outIndices);
+	template <typename VertexType>
+	static void CreateCube(const Vec3f& size, std::vector<VertexType>& outVertices, std::vector<uint32_t>& outIndices);
 
 
 	/**
