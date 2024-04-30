@@ -381,6 +381,140 @@ struct VertexPositionUv3D
 
 
 /**
+ * @brief 3D 위치, 법선 정보를 가진 정점입니다.
+ */
+struct VertexPositionNormal3D
+{
+	/**
+	 * @brief 3D 위치, 법선 정보를 가진 정점의 디폴트 생성자입니다.
+	 */
+	VertexPositionNormal3D() noexcept
+		: position(0.0f, 0.0f, 0.0f)
+		, normal(0.0f, 0.0f, 0.0f) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선 정보를 가진 정점의 생성자입니다.
+	 *
+	 * @param p 정점의 위치입니다.
+	 * @param n 정점의 법선 벡터입니다.
+	 */
+	VertexPositionNormal3D(Vec3f&& p, Vec3f&& n) noexcept
+		: position(p)
+		, normal(n) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선 정보를 가진 정점의 생성자입니다.
+	 *
+	 * @param position 정점의 위치입니다.
+	 * @param normal 정점의 법선 벡터입니다.
+	 * @param uv 정점의 텍스처 좌표입니다.
+	 */
+	VertexPositionNormal3D(const Vec3f& p, const Vec3f& n) noexcept
+		: position(p)
+		, normal(n) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선 정보를 가진 정점의 생성자입니다.
+	 *
+	 * @param px 정점 위치의 X좌표입니다.
+	 * @param py 정점 위치의 Y좌표입니다.
+	 * @param pz 정점 위치의 Z좌표입니다.
+	 * @param nx 정점 법선 벡터의 X성분입니다.
+	 * @param ny 정점 법선 벡터의 Y성분입니다.
+	 * @param nz 정점 법선 벡터의 Z성분입니다.
+	 */
+	VertexPositionNormal3D(
+		float px, float py, float pz,
+		float nx, float ny, float nz
+	) noexcept
+		: position(px, py, pz)
+		, normal(nx, ny, nz) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선 정보를 가진 정점의 복사 생성자입니다.
+	 *
+	 * @param instance 복사를 수행할 3D 위치, 법선 정보를 가진 정점 인스턴스입니다.
+	 */
+	VertexPositionNormal3D(VertexPositionNormal3D&& instance) noexcept
+		: position(instance.position)
+		, normal(instance.normal) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선 정보를 가진 정점의 복사 생성자입니다.
+	 *
+	 * @param instance 복사를 수행할 3D 위치, 법선 정보를 가진 정점 인스턴스입니다.
+	 */
+	VertexPositionNormal3D(const VertexPositionNormal3D& instance) noexcept
+		: position(instance.position)
+		, normal(instance.normal) {}
+
+
+	/**
+	 * @brief 3D 위치, 법선 정보를 가진 정점의 대입 연산자입니다.
+	 *
+	 * @param instance 복사를 수행할 3D 위치, 법선 정보를 가진 정점 인스턴스입니다.
+	 *
+	 * @return 대인한 객체의 참조자를 반환합니다.
+	 */
+	VertexPositionNormal3D& operator=(VertexPositionNormal3D&& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		position = instance.position;
+		normal = instance.normal;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 3D 위치, 법선 정보를 가진 정점의 대입 연산자입니다.
+	 *
+	 * @param instance 복사를 수행할 3D 위치, 법선 정보를 가진 정점 인스턴스입니다.
+	 *
+	 * @return 대인한 객체의 참조자를 반환합니다.
+	 */
+	VertexPositionNormal3D& operator=(const VertexPositionNormal3D& instance) noexcept
+	{
+		if (this == &instance) return *this;
+
+		position = instance.position;
+		normal = instance.normal;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 정점의 바이트 보폭 값을 얻습니다.
+	 *
+	 * @return 정점의 파이트 보폭(Stride) 값을 반환합니다.
+	 */
+	static uint32_t GetStride()
+	{
+		return sizeof(VertexPositionNormal3D);
+	}
+
+
+	/**
+	 * @brief 정점의 위치입니다.
+	 */
+	Vec3f position;
+
+
+	/**
+	 * @brief 정점의 법선 벡터입니다.
+	 */
+	Vec3f normal;
+};
+
+
+/**
  * @brief 3D 위치, 법선, 텍스처 좌표 정보를 가진 정점입니다.
  */
 struct VertexPositionNormalUv3D
