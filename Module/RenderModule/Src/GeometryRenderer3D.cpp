@@ -152,6 +152,74 @@ void GeometryRenderer3D::DrawCube3D(const Mat4x4& world, const Vec3f& extents, c
 	DrawGeometry3D(EDrawType::Lines, vertexCount);
 }
 
+void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const Vec4f& color, uint32_t sliceCount)
+{
+	uint32_t vertexCount = 0;
+	float stackStep = Pi / static_cast<float>(sliceCount);
+	float sliceStep = TwoPi / static_cast<float>(sliceCount);
+
+	for (uint32_t stack = 0; stack <= sliceCount; ++stack)
+	{
+		float phi = static_cast<float>(stack) * stackStep;
+
+		for (uint32_t slice = 0; slice < sliceCount; ++slice)
+		{
+			float theta0 = static_cast<float>(slice + 0) * sliceStep;
+			float theta1 = static_cast<float>(slice + 1) * sliceStep;
+
+			vertices_[vertexCount++] = VertexPositionColor3D(
+				Vec3f(
+					radius * MathModule::Sin(phi) * MathModule::Cos(theta0),
+					radius * MathModule::Cos(phi),
+					radius * MathModule::Sin(phi) * MathModule::Sin(theta0)
+				),
+				color
+			);
+			vertices_[vertexCount++] = VertexPositionColor3D(
+				Vec3f(
+					radius * MathModule::Sin(phi) * MathModule::Cos(theta1),
+					radius * MathModule::Cos(phi),
+					radius * MathModule::Sin(phi) * MathModule::Sin(theta1)
+				),
+				color
+			);
+		}
+	}
+
+	stackStep = TwoPi / static_cast<float>(sliceCount);
+	for (uint32_t slice = 0; slice < sliceCount; ++slice)
+	{
+		float theta = static_cast<float>(slice) * sliceStep;
+		
+		for (uint32_t stack = 0; stack <= sliceCount; ++stack)
+		{
+			float phi0 = static_cast<float>(stack + 0) * stackStep;
+			float phi1 = static_cast<float>(stack + 1) * stackStep;
+
+			vertices_[vertexCount++] = VertexPositionColor3D(
+				Vec3f(
+					radius * MathModule::Cos(phi0) * MathModule::Cos(theta),
+					radius * MathModule::Sin(phi0),
+					radius * MathModule::Cos(phi0) * MathModule::Sin(theta)
+				),
+				color
+			);
+			vertices_[vertexCount++] = VertexPositionColor3D(
+				Vec3f(
+					radius * MathModule::Cos(phi1) * MathModule::Cos(theta),
+					radius * MathModule::Sin(phi1),
+					radius * MathModule::Cos(phi1) * MathModule::Sin(theta)
+				),
+				color
+			);
+		}
+	}
+
+
+	world_ = world;
+	DrawGeometry3D(EDrawType::Lines, vertexCount);
+}
+
 void GeometryRenderer3D::DrawGrid3D(const Vec3f& extensions, float stride)
 {
 	CHECK(stride >= 1.0f);

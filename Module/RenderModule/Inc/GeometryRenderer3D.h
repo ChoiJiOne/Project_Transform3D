@@ -120,7 +120,18 @@ public:
 
 
 	/**
-	 * @brief XZ 평면의 격자를 그립니다.
+	 * @brief 3D 구를 그립니다.
+	 * 
+	 * @param world 월드 행렬입니다.
+	 * @param radius 구의 반지름 길이입니다.
+	 * @param color 구의 색상입니다.
+	 * @param sliceCount 구의 분할 횟수입니다.
+	 */
+	void DrawSphere3D(const Mat4x4& world, float radius, const Vec4f& color, uint32_t sliceCount);
+
+
+	/**
+	 * @brief 격자를 그립니다.
 	 * 
 	 * @param extensions 격자의 XYZ 순의 크기입니다.
 	 * @param stride 격자의 간격입니다.
