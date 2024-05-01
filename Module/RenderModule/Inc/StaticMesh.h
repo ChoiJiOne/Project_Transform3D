@@ -64,14 +64,6 @@ public:
 
 
 	/**
-	 * @brief 메시의 정점 배열 오브젝트를 얻습니다.
-	 *
-	 * @return 메시의 정점 배열 오브젝트를 반환합니다.
-	 */
-	uint32_t GetVertexArrayObject() const { return vertexArrayObject_; }
-
-
-	/**
 	 * @brief 메시의 정점 목록을 얻습니다.
 	 *
 	 * @return 메시의 정점 목록 상수 참조자를 반환합니다.
