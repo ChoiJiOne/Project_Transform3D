@@ -41,14 +41,6 @@ public:
 
 
 	/**
-	 * @brief 렌더러의 월드 행렬을 설정합니다.
-	 * 
-	 * @param world 설정할 월드 행렬입니다.
-	 */
-	void SetWorld(const Mat4x4& world) { world_ = world; }
-
-
-	/**
 	 * @brief 렌더러의 뷰 행렬을 설정합니다.
 	 * 
 	 * @param view 설정할 뷰 행렬입니다.
