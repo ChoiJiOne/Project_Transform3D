@@ -2,6 +2,7 @@
 
 #include "Assertion.h"
 #include "GeometryRenderer3D.h"
+#include "RenderModule.h"
 
 GeometryRenderer3D::GeometryRenderer3D() 
 	: Shader("Resource/Shader/GeometryRenderer3D.vert", "Resource/Shader/GeometryRenderer3D.frag")
@@ -193,24 +194,31 @@ void GeometryRenderer3D::DrawGeometry3D(const EDrawType& drawType, uint32_t vert
 {
 	CHECK(drawType != EDrawType::None);
 
-	const void* vertexPtr = reinterpret_cast<const void*>(vertices_.data());
-	uint32_t bufferByteSize = static_cast<uint32_t>(VertexPositionColor3D::GetStride() * vertices_.size());
-	vertexBuffer_.SetBufferData(vertexPtr, bufferByteSize);
-	
-	Shader::Bind();
+	GLboolean originEnableDepth;
+	GL_FAILED(glGetBooleanv(GL_DEPTH_TEST, &originEnableDepth));
 
-	Shader::SetUniform("world", world_);
-	Shader::SetUniform("view", view_);
-	Shader::SetUniform("projection", projection_);
-
-	if (drawType == EDrawType::Points)
+	RenderModule::SetDepthMode(true);
 	{
-		Shader::SetUniform("pointSize", pointSize_);
+		const void* vertexPtr = reinterpret_cast<const void*>(vertices_.data());
+		uint32_t bufferByteSize = static_cast<uint32_t>(VertexPositionColor3D::GetStride() * vertices_.size());
+		vertexBuffer_.SetBufferData(vertexPtr, bufferByteSize);
+
+		Shader::Bind();
+
+		Shader::SetUniform("world", world_);
+		Shader::SetUniform("view", view_);
+		Shader::SetUniform("projection", projection_);
+
+		if (drawType == EDrawType::Points)
+		{
+			Shader::SetUniform("pointSize", pointSize_);
+		}
+
+		GL_FAILED(glBindVertexArray(vertexArrayObject_));
+		GL_FAILED(glDrawArrays(static_cast<GLenum>(drawType), 0, vertexCount));
+		GL_FAILED(glBindVertexArray(0));
+
+		Shader::Unbind();
 	}
-
-	GL_FAILED(glBindVertexArray(vertexArrayObject_));
-	GL_FAILED(glDrawArrays(static_cast<GLenum>(drawType), 0, vertexCount));
-	GL_FAILED(glBindVertexArray(0));
-
-	Shader::Unbind();
+	RenderModule::SetDepthMode(originEnableDepth);
 }
