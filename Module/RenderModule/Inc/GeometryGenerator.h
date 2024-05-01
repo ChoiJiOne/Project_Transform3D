@@ -20,8 +20,7 @@ public:
 	 * @param outVertices 생성한 큐브의 정점 목록입니다.
 	 * @param outIndices  생성한 큐브의 인덱스 목록입니다.
 	 */
-	template <typename VertexType>
-	static void CreateCube(const Vec3f& size, std::vector<VertexType>& outVertices, std::vector<uint32_t>& outIndices);
+	static void CreateCube(const Vec3f& size, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices);
 
 
 	/**
@@ -32,6 +31,5 @@ public:
 	 * @param outVertices 생성한 구의 정점 목록입니다.
 	 * @param outIndices  생성한 구의 인덱스 목록입니다.
 	 */
-	template <typename VertexType>
-	static void CreateSphere(float radius, uint32_t tessellation, std::vector<VertexType>& outVertices, std::vector<uint32_t>& outIndices);
+	static void CreateSphere(float radius, uint32_t tessellation, std::vector<VertexPositionNormalUv3D>& outVertices, std::vector<uint32_t>& outIndices);
 };
