@@ -120,11 +120,11 @@ public:
 	/**
 	 * @brief 3D 큐브를 그립니다.
 	 * 
-	 * @param projection 투영 행렬입니다.
+	 * @param world 월드 행렬입니다.
 	 * @param extents 큐브의 X/Y/Z 축 방향으로의 크기입니다.
 	 * @param color 큐브의 색상입니다.
 	 */
-	void DrawCube3D(const Vec3f& extents, const Vec4f& color);
+	void DrawCube3D(const Mat4x4& world, const Vec3f& extents, const Vec4f& color);
 
 
 	/**

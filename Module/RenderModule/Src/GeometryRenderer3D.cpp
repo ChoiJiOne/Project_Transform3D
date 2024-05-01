@@ -52,6 +52,7 @@ void GeometryRenderer3D::DrawPoints3D(const std::vector<Vec3f>& positions, const
 	}
 
 	pointSize_ = pointSize;
+	world_ = Mat4x4::Identity();
 
 	DrawGeometry3D(EDrawType::Points, static_cast<uint32_t>(positions.size()));
 }
@@ -65,6 +66,7 @@ void GeometryRenderer3D::DrawConnectPoints3D(const std::vector<Vec3f>& positions
 		vertices_[index] = VertexPositionColor3D(positions[index], color);
 	}
 
+	world_ = Mat4x4::Identity();
 	DrawGeometry3D(EDrawType::LineStrip, static_cast<uint32_t>(positions.size()));
 }
 
@@ -75,6 +77,7 @@ void GeometryRenderer3D::DrawLine3D(const Vec3f& fromPosition, const Vec3f& toPo
 	vertices_[vertexCount++] = VertexPositionColor3D(fromPosition, color);
 	vertices_[vertexCount++] = VertexPositionColor3D(toPosition, color);
 
+	world_ = Mat4x4::Identity();
 	DrawGeometry3D(EDrawType::LineStrip, vertexCount);
 }
 
@@ -85,6 +88,7 @@ void GeometryRenderer3D::DrawLine3D(const Vec3f& fromPosition, const Vec4f& from
 	vertices_[vertexCount++] = VertexPositionColor3D(fromPosition, fromColor);
 	vertices_[vertexCount++] = VertexPositionColor3D(toPosition, toColor);
 
+	world_ = Mat4x4::Identity();
 	DrawGeometry3D(EDrawType::LineStrip, vertexCount);
 }
 
@@ -96,11 +100,12 @@ void GeometryRenderer3D::DrawLines3D(const std::vector<Vec3f>& positions, const 
 	{
 		vertices_[index] = VertexPositionColor3D(Vec3f(positions[index].x, positions[index].y, positions[index].z), color);
 	}
-	
+
+	world_ = Mat4x4::Identity();
 	DrawGeometry3D(EDrawType::Lines, static_cast<uint32_t>(positions.size()));
 }
 
-void GeometryRenderer3D::DrawCube3D(const Vec3f& extents, const Vec4f& color)
+void GeometryRenderer3D::DrawCube3D(const Mat4x4& world, const Vec3f& extents, const Vec4f& color)
 {
 	uint32_t vertexCount = 0;
 
@@ -143,6 +148,7 @@ void GeometryRenderer3D::DrawCube3D(const Vec3f& extents, const Vec4f& color)
 	vertices_[vertexCount++] = VertexPositionColor3D(Vec3f(maxPosition.x, maxPosition.y, minPosition.z), color);
 	vertices_[vertexCount++] = VertexPositionColor3D(Vec3f(maxPosition.x, minPosition.y, minPosition.z), color);
 
+	world_ = world;
 	DrawGeometry3D(EDrawType::Lines, vertexCount);
 }
 
@@ -186,7 +192,7 @@ void GeometryRenderer3D::DrawGrid3D(const Vec3f& extensions, float stride)
 	CHECK(0 <= vertexCount && vertexCount < MAX_VERTEX_SIZE);
 	vertices_[vertexCount++] = VertexPositionColor3D(Vec3f(0.0f, maxYPosition, 0.0f), Vec4f(0.0f, 1.0f, 0.0f, 1.0f));
 
-
+	world_ = Mat4x4::Identity();
 	DrawGeometry3D(EDrawType::Lines, static_cast<uint32_t>(vertexCount));
 }
 
