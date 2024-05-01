@@ -152,8 +152,10 @@ void GeometryRenderer3D::DrawCube3D(const Mat4x4& world, const Vec3f& extents, c
 	DrawGeometry3D(EDrawType::Lines, vertexCount);
 }
 
-void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const Vec4f& color, uint32_t sliceCount)
+void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const Vec4f& color)
 {
+	static const uint32_t sliceCount = 20;
+
 	uint32_t vertexCount = 0;
 	float stackStep = Pi / static_cast<float>(sliceCount);
 	float sliceStep = TwoPi / static_cast<float>(sliceCount);
@@ -167,6 +169,7 @@ void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const V
 			float theta0 = static_cast<float>(slice + 0) * sliceStep;
 			float theta1 = static_cast<float>(slice + 1) * sliceStep;
 
+			CHECK(0 <= vertexCount && vertexCount < MAX_VERTEX_SIZE);
 			vertices_[vertexCount++] = VertexPositionColor3D(
 				Vec3f(
 					radius * MathModule::Sin(phi) * MathModule::Cos(theta0),
@@ -175,6 +178,8 @@ void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const V
 				),
 				color
 			);
+
+			CHECK(0 <= vertexCount && vertexCount < MAX_VERTEX_SIZE);
 			vertices_[vertexCount++] = VertexPositionColor3D(
 				Vec3f(
 					radius * MathModule::Sin(phi) * MathModule::Cos(theta1),
@@ -196,6 +201,7 @@ void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const V
 			float phi0 = static_cast<float>(stack + 0) * stackStep;
 			float phi1 = static_cast<float>(stack + 1) * stackStep;
 
+			CHECK(0 <= vertexCount && vertexCount < MAX_VERTEX_SIZE);
 			vertices_[vertexCount++] = VertexPositionColor3D(
 				Vec3f(
 					radius * MathModule::Cos(phi0) * MathModule::Cos(theta),
@@ -204,6 +210,8 @@ void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const V
 				),
 				color
 			);
+
+			CHECK(0 <= vertexCount && vertexCount < MAX_VERTEX_SIZE);
 			vertices_[vertexCount++] = VertexPositionColor3D(
 				Vec3f(
 					radius * MathModule::Cos(phi1) * MathModule::Cos(theta),
