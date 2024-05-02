@@ -486,6 +486,21 @@ struct Quat
 	{
 		return MathModule::ToDegree(2.0f * MathModule::ACos(q.w));
 	}
+
+
+	/**
+	 * @brief 두 쿼터니언의 내적 연산을 수행합니다.
+	 *
+	 * @param lhs 쿼터니언의 내적 연산을 수행할 좌측 피연산자입니다.
+	 * @param rhs 쿼터니언의 내적 연산을 수행할 우측 피연산자입니다.
+	 *
+	 * @return 내적 연산 결과를 반환합니다.
+	 */
+	static inline float Dot(const Quat& lhs, const Quat& rhs)
+	{
+		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
+	}
+
 	
 
 	/**
