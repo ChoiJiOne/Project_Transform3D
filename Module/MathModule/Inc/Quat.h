@@ -20,7 +20,7 @@ struct Quat
 	 *
 	 * @note 모든 원소의 값을 0으로 초기화합니다.
 	 */
-	explicit Quat() noexcept : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
+	Quat() noexcept : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
 
 
 	/**
@@ -31,7 +31,7 @@ struct Quat
 	 * @param zz 쿼터니언의 z 성분입니다.
 	 * @param ww 쿼터니언의 w 성분입니다.
 	 */
-	explicit Quat(float&& xx, float&& yy, float&& zz, float&& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
+	Quat(float&& xx, float&& yy, float&& zz, float&& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
 
 
 	/**
@@ -42,43 +42,8 @@ struct Quat
 	 * @param zz 쿼터니언의 z 성분입니다.
 	 * @param ww 쿼터니언의 w 성분입니다.
 	 */
-	explicit Quat(const float& xx, const float& yy, const float& zz, const float& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
+	Quat(const float& xx, const float& yy, const float& zz, const float& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
 
-
-	/**
-	 * @brief 쿼터니언의 생성자입니다.
-	 *
-	 * @param vv i,j,k 축의 벡터 요소입니다.
-	 * @param ww 회전의 스케일을 조정하는 w 성분입니다.
-	 */
-	explicit Quat(Vec3f&& vv, float&& ww) noexcept : v(vv), w(ww) {}
-
-
-	/**
-	 * @brief 쿼터니언의 생성자입니다.
-	 *
-	 * @param vv i,j,k 축의 벡터 요소입니다.
-	 * @param ww 회전의 스케일을 조정하는 w 성분입니다.
-	 */
-	explicit Quat(const Vec3f& vv, const float& ww) noexcept : v(vv), w(ww) {}
-
-
-	/**
-	 * @brief 쿼터니언의 생성자입니다.
-	 * 
-	 * @param axis 회전 축입니다.
-	 * @param radian 라디안 단위의 회전 각도입니다. 
-	 */
-	explicit Quat(const Vec3f& axis, float radian)
-	{
-		float s = MathModule::Sin(radian * 0.5f);
-		float c = MathModule::Cos(radian * 0.5f);
-		Vec3f norm = Vec3f::Normalize(axis);
-
-		v = norm * s;
-		w = c;
-	}
-	
 
 	/**
 	 * @brief 쿼터니언의 복사 생성자입니다.
@@ -611,7 +576,7 @@ struct Quat
 			return Quat();
 		}
 
-		if (start == end * -1.0f)
+		if (start == -end)
 		{
 			Vec3f ortho;
 
@@ -756,9 +721,9 @@ struct Quat
 		Vec3f f = q * Vec3f(0.0f, 0.0f, 1.0f);
 
 		return Mat4x4(
-			r.x, r.y, r.z, 0.0f,
-			u.x, u.y, u.z, 0.0f,
-			f.x, f.y, f.z, 0.0f,
+			 r.x,  r.y,  r.z, 0.0f,
+			 u.x,  u.y,  u.z, 0.0f,
+		 	 f.x,  f.y,  f.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
 		);
 	}
