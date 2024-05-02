@@ -447,6 +447,19 @@ struct Quat
 
 		return Quat(norm.x * s, norm.y * s, norm.z * s, c);
 	}
+
+
+	/**
+	 * @brief 쿼터니언의 축을 얻습니다.
+	 *
+	 * @param q 축을 얻을 쿼터니언입니다.
+	 *
+	 * @return 쿼터니언의 축을 반환합니다.
+	 */
+	static inline Vec3f Axis(const Quat& q)
+	{
+		return Vec3f::Normalize(Vec3f(q.x, q.y, q.z));
+	}
 	
 
 	/**
