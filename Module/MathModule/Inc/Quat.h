@@ -11,6 +11,7 @@
  * @see 
  * - https://gabormakesgames.com/quaternions.html
  * - https://en.wikipedia.org/wiki/Quaternion
+ * - https://github.com/mmp/pbrt-v3/blob/master/src/core/quaternion.h
  */
 struct Quat
 {
