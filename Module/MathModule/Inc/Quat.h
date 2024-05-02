@@ -416,6 +416,40 @@ struct Quat
 
 
 	/**
+	 * @brief 각도와 축을 이용해서 쿼터니언을 얻습니다.
+	 *
+	 * @parma axis 축 입니다.
+	 * @param radian 라디안 단위의 각도입니다.
+	 */
+	static inline Quat AxisRadian(const Vec3f& axis, float radian)
+	{
+		float s = MathModule::Sin(radian * 0.5f);
+		float c = MathModule::Cos(radian * 0.5f);
+		Vec3f norm = Vec3f::Normalize(axis);
+
+		return Quat(norm.x * s, norm.y * s, norm.z * s, c);
+	}
+
+
+	/**
+	 * @brief 각도와 축을 이용해서 쿼터니언을 얻습니다.
+	 *
+	 * @parma axis 축 입니다.
+	 * @param angle 육십분법 단위의 각도입니다.
+	 */
+	static inline Quat AxisAngle(const Vec3f& axis, float angle)
+	{
+		float radian = MathModule::ToRadian(angle);
+
+		float s = MathModule::Sin(radian * 0.5f);
+		float c = MathModule::Cos(radian * 0.5f);
+		Vec3f norm = Vec3f::Normalize(axis);
+
+		return Quat(norm.x * s, norm.y * s, norm.z * s, c);
+	}
+	
+
+	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
 	 */
 	union
