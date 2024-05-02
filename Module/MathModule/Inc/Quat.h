@@ -245,6 +245,32 @@ struct Quat
 			-x * q.x - y * q.y - z * q.z + w * q.w
 		);
 	}
+
+
+	/**
+	 * @brief 쿼터니언과 벡터의 곱셈 연산을 수행합니다.
+	 *
+	 * @param vec 곱셈 연산을 수행할 벡터 값입니다.
+	 *
+	 * @return 곱셈 연산을 수행한 결과를 반환합니다.
+	 */
+	Vec3f operator*(Vec3f&& vec) const
+	{
+		return v * 2.0f * Vec3f::Dot(v, vec) + vec * (w * w - Vec3f::Dot(v, v)) + Vec3f::Cross(v, vec) * 2.0f * w;
+	}
+
+
+	/**
+	 * @brief 쿼터니언과 벡터의 곱셈 연산을 수행합니다.
+	 *
+	 * @param vec 곱셈 연산을 수행할 벡터 값입니다.
+	 *
+	 * @return 곱셈 연산을 수행한 결과를 반환합니다.
+	 */
+	Vec3f operator*(const Vec3f& vec) const
+	{
+		return v * 2.0f * Vec3f::Dot(v, vec) + vec * (w * w - Vec3f::Dot(v, v)) + Vec3f::Cross(v, vec) * 2.0f * w;
+	}
 	
 
 	/**
