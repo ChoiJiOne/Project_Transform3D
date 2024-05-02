@@ -274,6 +274,96 @@ struct Quat
 	
 
 	/**
+	 * @brief 두 쿼터니언에 대응하는 원소를 더합니다.
+	 *
+	 * @param q 쿼터니언의 덧셈을 수행할 피연산자입니다.
+	 *
+	 * @return 연산을 수행한 쿼터니언의 참조자를 반환합니다.
+	 */
+	Quat& operator+=(Quat&& q) noexcept
+	{
+		x += q.x;
+		y += q.y;
+		z += q.z;
+		w += q.w;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언에 대응하는 원소를 더합니다.
+	 *
+	 * @param q 쿼터니언의 덧셈을 수행할 피연산자입니다.
+	 *
+	 * @return 연산을 수행한 쿼터니언의 참조자를 반환합니다.
+	 */
+	Quat& operator+=(const Quat& q) noexcept
+	{
+		x += q.x;
+		y += q.y;
+		z += q.z;
+		w += q.w;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언에 대응하는 원소를 뺍니다.
+	 *
+	 * @param q 쿼터니언의 뺄셈을 수행할 피연산자입니다.
+	 *
+	 * @return 연산을 수행한 쿼터니언의 참조자를 반환합니다.
+	 */
+	Quat& operator-=(Quat&& q) noexcept
+	{
+		x -= q.x;
+		y -= q.y;
+		z -= q.z;
+		w -= q.w;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언에 대응하는 원소를 뺍니다.
+	 *
+	 * @param q 쿼터니언의 뺄셈을 수행할 피연산자입니다.
+	 *
+	 * @return 연산을 수행한 쿼터니언의 참조자를 반환합니다.
+	 */
+	Quat& operator-=(const Quat& q) noexcept
+	{
+		x -= q.x;
+		y -= q.y;
+		z -= q.z;
+		w -= q.w;
+
+		return *this;
+	}
+
+
+	/**
+	 * @brief 쿼터니언의 스케일 연산을 수행합니다.
+	 *
+	 * @param s 스케일 연산을 수행할 값입니다.
+	 *
+	 * @return 연산을 수행한 쿼터니언의 참조자를 반환합니다.
+	 */
+	Quat& operator*=(float s) noexcept
+	{
+		x *= s;
+		y *= s;
+		z *= s;
+		w *= s;
+
+		return *this;
+	}
+
+
+	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
 	 */
 	union
