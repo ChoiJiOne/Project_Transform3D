@@ -571,6 +571,28 @@ struct Quat
 
 
 	/**
+	 * @brief 모든 원소가 0인 쿼터니언을 얻습니다.
+	 *
+	 * @return 모든 원소가 0인 쿼터니언을 반환합니다.
+	 */
+	static inline Quat Zero()
+	{
+		return Quat(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+
+
+	/**
+	 * @brief w의 값이 1인 쿼터니언을 얻습니다.
+	 *
+	 * @return w의 값이 1인 쿼터니언을 얻습니다.
+	 */
+	static inline Quat Identity()
+	{
+		return Quat(0.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+
+	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
 	 */
 	union
