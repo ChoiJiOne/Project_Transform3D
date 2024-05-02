@@ -364,6 +364,58 @@ struct Quat
 
 
 	/**
+	 * @brief 두 쿼터니언 동일한지 검사합니다.
+	 *
+	 * @param  q 검사를 수행할 피연산자입니다.
+	 *
+	 * @return 두 쿼터니언이 동일하다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	bool operator==(Quat&& q) const
+	{
+		return MathModule::Abs(x - q.x) <= Epsilon && MathModule::Abs(y - q.y) <= Epsilon && MathModule::Abs(z - q.z) <= Epsilon && MathModule::Abs(w - q.w) <= Epsilon;
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언 동일한지 검사합니다.
+	 *
+	 * @param q 검사를 수행할 피연산자입니다.
+	 *
+	 * @return 두 쿼터니언이 동일하다면 true, 그렇지 않으면 false를 반환합니다.
+	 */
+	bool operator==(const Quat& q) const
+	{
+		return MathModule::Abs(x - q.x) <= Epsilon && MathModule::Abs(y - q.y) <= Epsilon && MathModule::Abs(z - q.z) <= Epsilon && MathModule::Abs(w - q.w) <= Epsilon;
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언 동일하지 않은지 검사합니다.
+	 *
+	 * @param q 검사를 수행할 피연산자입니다.
+	 *
+	 * @return 두 쿼터니언이 동일하지 않다면 true, 그렇다면 false를 반환합니다.
+	 */
+	bool operator!=(Quat&& q) const
+	{
+		return MathModule::Abs(x - q.x) > Epsilon || MathModule::Abs(y - q.y) > Epsilon || MathModule::Abs(z - q.z) > Epsilon || MathModule::Abs(w - q.w) > Epsilon;
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언 동일하지 않은지 검사합니다.
+	 *
+	 * @param q 검사를 수행할 피연산자입니다.
+	 *
+	 * @return 두 쿼터니언이 동일하지 않다면 true, 그렇다면 false를 반환합니다.
+	 */
+	bool operator!=(const Quat& q) const
+	{
+		return MathModule::Abs(x - q.x) > Epsilon || MathModule::Abs(y - q.y) > Epsilon || MathModule::Abs(z - q.z) > Epsilon || MathModule::Abs(w - q.w) > Epsilon;
+	}
+
+
+	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
 	 */
 	union
