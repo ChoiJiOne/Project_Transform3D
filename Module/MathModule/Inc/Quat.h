@@ -501,7 +501,19 @@ struct Quat
 		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w;
 	}
 
-	
+
+	/**
+	 * @brief 쿼터니언의 크기 제곱 값을 계산합니다.
+	 *
+	 * @param q 크기 제곱을 계산할 쿼터니언입니다.
+	 *
+	 * @return 계산된 크기 제곱 값을 반환합니다.
+	 */
+	static inline float LengthSq(const Quat& q)
+	{
+		return q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w;
+	}
+
 
 	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
