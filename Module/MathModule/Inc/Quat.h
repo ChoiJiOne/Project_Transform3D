@@ -530,6 +530,20 @@ struct Quat
 
 
 	/**
+	 * @brief 쿼터니언을 정규화합니다.
+	 *
+	 * @param q 정규화 할 쿼터니언입니다.
+	 *
+	 * @return 정규화된 쿼터니언을 반환합니다.
+	 */
+	static inline Quat Normalize(const Quat& q)
+	{
+		float invLength = 1.0f / Quat::Length(q);
+		return Quat(q.x * invLength, q.y * invLength, q.z * invLength, q.w * invLength);
+	}
+
+
+	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
 	 */
 	union
