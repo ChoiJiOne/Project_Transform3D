@@ -210,6 +210,41 @@ struct Quat
 	{
 		return Quat(x * s, y * s, z * s, w * s);
 	}
+
+
+	/**
+	 * @brief 쿼터니언 곱셈 연산을 수행합니다.
+	 *
+	 * @param q 곱셈 연산을 수행할 쿼터니언 값입니다.
+	 *
+	 * @return 곱셈 연산을 수행한 결과를 반환합니다.
+	 */
+	Quat operator*(Quat&& q) const
+	{
+		return Quat(
+			+x * q.w + y * q.z - z * q.y + w * q.x,
+			-x * q.z + y * q.w + z * q.x + w * q.y,
+			+x * q.y - y * q.x + z * q.w + w * q.z,
+			-x * q.x - y * q.y - z * q.z + w * q.w
+		);
+	}
+
+	/**
+	 * @brief 쿼터니언 곱셈 연산을 수행합니다.
+	 *
+	 * @param q 곱셈 연산을 수행할 쿼터니언 값입니다.
+	 *
+	 * @return 곱셈 연산을 수행한 결과를 반환합니다.
+	 */
+	Quat operator*(const Quat& q) const
+	{
+		return Quat(
+			+x * q.w + y * q.z - z * q.y + w * q.x,
+			-x * q.z + y * q.w + z * q.x + w * q.y,
+			+x * q.y - y * q.x + z * q.w + w * q.z,
+			-x * q.x - y * q.y - z * q.z + w * q.w
+		);
+	}
 	
 
 	/**
