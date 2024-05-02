@@ -460,6 +460,32 @@ struct Quat
 	{
 		return Vec3f::Normalize(Vec3f(q.x, q.y, q.z));
 	}
+
+
+	/**
+	 * @brief 쿼터니언의 라디안 각을 얻습니다.
+	 *
+	 * @param q 라디안 각도를 얻을 쿼터니언입니다.
+	 *
+	 * @return 쿼터니언의 라디안 각을 반환합니다.
+	 */
+	static inline float Radian(const Quat& q)
+	{
+		return 2.0f * MathModule::ACos(q.w);
+	}
+
+
+	/**
+	 * @brief 쿼터니언의 육십분법 각을 얻습니다.
+	 *
+	 * @param q 육십분법 각도를 얻을 쿼터니언입니다.
+	 *
+	 * @return 쿼터니언의 육십분법 각을 반환합니다.
+	 */
+	static inline float Angle(const Quat& q)
+	{
+		return MathModule::ToDegree(2.0f * MathModule::ACos(q.w));
+	}
 	
 
 	/**
