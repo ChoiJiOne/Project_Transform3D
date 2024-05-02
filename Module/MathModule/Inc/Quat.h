@@ -544,6 +544,19 @@ struct Quat
 
 
 	/**
+	 * @brief 켤레 쿼터니언을 얻습니다.
+	 *
+	 * @param q 켤러 값을 계산할 쿼터니언입니다.
+	 *
+	 * @return 켤레 쿼터니언을 반환합니다.
+	 */
+	static inline Quat Conjugate(const Quat& q)
+	{
+		return Quat(-q.x, -q.y, -q.z, q.w);
+	}
+
+
+	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
 	 */
 	union
