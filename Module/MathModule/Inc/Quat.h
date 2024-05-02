@@ -516,6 +516,20 @@ struct Quat
 
 
 	/**
+	 * @brief 쿼터니언의 크기를 얻습니다.
+	 *
+	 * @param q 크기를 계산할 벡터입니다.
+	 *
+	 * @return 계산된 크기 값을 반환합니다.
+	 */
+	static inline float Length(const Quat& q)
+	{
+		float lengthSq = Quat::LengthSq(q);
+		return MathModule::Sqrt(lengthSq);
+	}
+
+
+	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
 	 */
 	union
