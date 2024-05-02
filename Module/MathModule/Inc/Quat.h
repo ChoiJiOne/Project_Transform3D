@@ -20,7 +20,7 @@ struct Quat
 	 *
 	 * @note 모든 원소의 값을 0으로 초기화합니다.
 	 */
-	Quat() noexcept : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
+	explicit Quat() noexcept : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
 
 
 	/**
@@ -31,7 +31,7 @@ struct Quat
 	 * @param zz 쿼터니언의 z 성분입니다.
 	 * @param ww 쿼터니언의 w 성분입니다.
 	 */
-	Quat(float&& xx, float&& yy, float&& zz, float&& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
+	explicit Quat(float&& xx, float&& yy, float&& zz, float&& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
 
 
 	/**
@@ -42,7 +42,7 @@ struct Quat
 	 * @param zz 쿼터니언의 z 성분입니다.
 	 * @param ww 쿼터니언의 w 성분입니다.
 	 */
-	Quat(const float& xx, const float& yy, const float& zz, const float& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
+	explicit Quat(const float& xx, const float& yy, const float& zz, const float& ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
 
 
 	/**
@@ -51,7 +51,7 @@ struct Quat
 	 * @param vv i,j,k 축의 벡터 요소입니다.
 	 * @param ww 회전의 스케일을 조정하는 w 성분입니다.
 	 */
-	Quat(Vec3f&& vv, float&& ww) noexcept : v(vv), w(ww) {}
+	explicit Quat(Vec3f&& vv, float&& ww) noexcept : v(vv), w(ww) {}
 
 
 	/**
@@ -60,7 +60,7 @@ struct Quat
 	 * @param vv i,j,k 축의 벡터 요소입니다.
 	 * @param ww 회전의 스케일을 조정하는 w 성분입니다.
 	 */
-	Quat(const Vec3f& vv, const float& ww) noexcept : v(vv), w(ww) {}
+	explicit Quat(const Vec3f& vv, const float& ww) noexcept : v(vv), w(ww) {}
 
 
 	/**
@@ -69,7 +69,7 @@ struct Quat
 	 * @param axis 회전 축입니다.
 	 * @param radian 라디안 단위의 회전 각도입니다. 
 	 */
-	Quat(const Vec3f& axis, float radian)
+	explicit Quat(const Vec3f& axis, float radian)
 	{
 		float s = MathModule::Sin(radian * 0.5f);
 		float c = MathModule::Cos(radian * 0.5f);
@@ -78,7 +78,7 @@ struct Quat
 		v = norm * s;
 		w = c;
 	}
-
+	
 
 	/**
 	 * @brief 쿼터니언의 복사 생성자입니다.
@@ -589,6 +589,209 @@ struct Quat
 	static inline Quat Identity()
 	{
 		return Quat(0.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+
+	/**
+	 * @brief 두 벡터 간의 회전 쿼터니언을 얻습니다.
+	 *
+	 * @param s 회전 시작 방향입니다.
+	 * @param e 회전 끝 방향입니다.
+	 *
+	 * @return 두 벡터 간의 회전 쿼터니언을 반환합니다.
+	 */
+	static inline Quat Rotate(const Vec3f& s, const Vec3f& e)
+	{
+		Vec3f start = Vec3f::Normalize(s);
+		Vec3f end = Vec3f::Normalize(e);
+		Quat quat;
+
+		if (start == end)
+		{
+			return Quat();
+		}
+
+		if (start == end * -1.0f)
+		{
+			Vec3f ortho;
+
+			if (MathModule::Abs(start.y) < MathModule::Abs(start.x))
+			{
+				ortho = Vec3f(0.0f, 1.0f, 0.0f);
+			}
+			else if (MathModule::Abs(start.z) < MathModule::Abs(start.y) && MathModule::Abs(start.z) < MathModule::Abs(start.x))
+			{
+				ortho = Vec3f(0.0f, 0.0f, 1.0f);
+			}
+			else
+			{
+				ortho = Vec3f(1.0f, 0.0f, 0.0f);
+			}
+
+			Vec3f axis = Vec3f::Normalize(Vec3f::Cross(start, ortho));
+			return AxisRadian(axis, 0.0f);
+		}
+
+		Vec3f half = Vec3f::Normalize(start + end);
+		Vec3f axis = Vec3f::Cross(start, half);
+		return AxisRadian(axis, Vec3f::Dot(start, half));
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언을 선형 보간합니다.
+	 *
+	 * @param s 보간의 시작 쿼터니언입니다.
+	 * @param e 보간의 끝 쿼터니언입니다.
+	 * @param t 두 쿼터니언의 보간 비율입니다.
+	 *
+	 * @return 보간된 쿼터니언을 반환합니다.
+	 */
+	static inline Quat Lerp(const Quat& s, const Quat& e, const float& t)
+	{
+		return s * (1.0f - t) + e * t;
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언의 정규화된 선형 보간값을 계산합니다.
+	 *
+	 * @param s 보간의 시작 쿼터니언입니다.
+	 * @param e 보간의 끝 쿼터니언입니다.
+	 * @param t 두 쿼터니언의 보간 비율입니다.
+	 *
+	 * @return 정규화된 선형 보간 값을 반환합니다.
+	 */
+	static inline Quat Nlerp(const Quat& s, const Quat& e, const float& t)
+	{
+		return Normalize(Lerp(s, e, t));
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언을 구면 선형 보간합니다.
+	 *
+	 * @param s 보간의 시작 쿼터니언입니다.
+	 * @param e 보간의 끝 쿼터니언입니다.
+	 * @param t 두 쿼터니언의 보간 비율입니다.
+	 *
+	 * @return 보간된 쿼터니언을 반환합니다.
+	 */
+	static inline Quat Slerp(const Quat& s, const Quat& e, const float& t)
+	{
+		return Pow(Inverse(s) * e, t) * s;
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언의 정규화된 구면 선형 보간값을 계산합니다.
+	 *
+	 * @param s 보간의 시작 쿼터니언입니다.
+	 * @param e 보간의 끝 쿼터니언입니다.
+	 * @param t 두 쿼터니언의 보간 비율입니다.
+	 *
+	 * @return 정규화된 선형 보간 값을 반환합니다.
+	 */
+	static inline Quat Nslerp(const Quat& s, const Quat& e, const float& t)
+	{
+		return Normalize(Slerp(s, e, t));
+	}
+
+
+	/**
+	 * @brief 쿼터니언의 거듭 제곱을 수행합니다.
+	 *
+	 * @param q 거듭 제곱 연산을 수행할 쿼터니언입니다.
+	 * @param power 거듭제곱 값입니다.
+	 *
+	 * @return 거듭 제곱이 수행된 쿼터니언 값을 반환합니다.
+	 */
+	static inline Quat Pow(const Quat& q, const float power)
+	{
+		float radian = Quat::Radian(q);
+		Vec3f axis = Vec3f::Normalize(Quat::Axis(q));
+
+		float c = MathModule::Cos(power * radian * 0.5f);
+		float s = MathModule::Sin(power * radian * 0.5f);
+
+		return Quat(axis.x * s, axis.y * s, axis.z * s, c);
+	}
+
+
+	/**
+	 * @brief 방향과 위를 기준으로 쿼터니언을 생성합니다.
+	 *
+	 * @param direction 쿼터니언 생성에 사용할 방향입니다.
+	 * @param up  쿼터니언 생성에 사용할 위 방향입니다.
+	 *
+	 * @return 생성된 쿼터니언을 반환합니다.
+	 */
+	static inline Quat LookRotate(const Vec3f& direction, const Vec3f& up)
+	{
+		Vec3f f = Vec3f::Normalize(direction);
+		Vec3f u = Vec3f::Normalize(up);
+		Vec3f r = Vec3f::Cross(u, f);
+
+		u = Vec3f::Cross(f, r);
+
+		Quat f2d = Quat::Rotate(Vec3f(0.0f, 0.0f, 1.0f), f);
+		Vec3f objectUp = f2d * Vec3f(0.0f, 1.0f, 0.0f);
+		Quat u2u = Quat::Rotate(objectUp, u);
+
+		return Quat::Normalize(f2d * u2u);
+	}
+
+
+	/**
+	 * @brief 쿼터니언을 행렬로 변환합니다.
+	 *
+	 * @param q 행렬로 변환할 쿼터니언입니다.
+	 *
+	 * @return 변환된 행렬을 반환합니다.
+	 */
+	static inline Mat4x4 ToMat(const Quat& q)
+	{
+		Vec3f r = q * Vec3f(1.0f, 0.0f, 0.0f);
+		Vec3f u = q * Vec3f(0.0f, 1.0f, 0.0f);
+		Vec3f f = q * Vec3f(0.0f, 0.0f, 1.0f);
+
+		return Mat4x4(
+			r.x, r.y, r.z, 0.0f,
+			u.x, u.y, u.z, 0.0f,
+			f.x, f.y, f.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+		);
+	}
+
+
+	/**
+	 * @brief 행렬을 쿼터니언으로 변환합니다.
+	 *
+	 * @param m 쿼터니언으로 변환할 행렬입니다.
+	 *
+	 * @return 변환된 쿼터니언을 반환합니다.
+	 */
+	static inline Quat ToQuat(const Mat4x4& m)
+	{
+		Vec3f u = Vec3f::Normalize(Vec3f(m.e10, m.e11, m.e12));
+		Vec3f f = Vec3f::Normalize(Vec3f(m.e20, m.e21, m.e22));
+		Vec3f r = Vec3f::Cross(u, f);
+		u = Vec3f::Cross(f, r);
+
+		return LookRotate(f, u);
+	}
+
+
+	/**
+	 * @brief 두 쿼터니언의 방향이 같은지 확인합니다.
+	 *
+	 * @param lhs 방향이 같은지 비교할 쿼터니언입니다.
+	 * @param rhs 방향이 같은지 비교할 또 다른 쿼터니언입니다.
+	 */
+	bool IsSameOrientation(const Quat& lhs, const Quat& rhs)
+	{
+		return (MathModule::Abs(lhs.x - rhs.x) <= Epsilon && MathModule::Abs(lhs.y - rhs.y) <= Epsilon && MathModule::Abs(lhs.z - rhs.z) <= Epsilon && MathModule::Abs(lhs.w - rhs.w) <= Epsilon)
+			|| (MathModule::Abs(lhs.x + rhs.x) <= Epsilon && MathModule::Abs(lhs.y + rhs.y) <= Epsilon && MathModule::Abs(lhs.z + rhs.z) <= Epsilon && MathModule::Abs(lhs.w + rhs.w) <= Epsilon);
 	}
 
 
