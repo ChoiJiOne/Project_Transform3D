@@ -718,9 +718,7 @@ struct Vec3f
 	 */
 	bool operator==(Vec3f&& v) const
 	{
-		return MathModule::Abs(x - v.x) <= Epsilon
-			&& MathModule::Abs(y - v.y) <= Epsilon
-			&& MathModule::Abs(z - v.z) <= Epsilon;
+		return MathModule::Abs(x - v.x) <= Epsilon && MathModule::Abs(y - v.y) <= Epsilon && MathModule::Abs(z - v.z) <= Epsilon;
 	}
 
 
@@ -733,9 +731,7 @@ struct Vec3f
 	 */
 	bool operator==(const Vec3f& v) const
 	{
-		return MathModule::Abs(x - v.x) <= Epsilon
-			&& MathModule::Abs(y - v.y) <= Epsilon
-			&& MathModule::Abs(z - v.z) <= Epsilon;
+		return MathModule::Abs(x - v.x) <= Epsilon && MathModule::Abs(y - v.y) <= Epsilon && MathModule::Abs(z - v.z) <= Epsilon;
 	}
 
 
@@ -748,9 +744,7 @@ struct Vec3f
 	 */
 	bool operator!=(Vec3f&& v) const
 	{
-		return MathModule::Abs(x - v.x) > Epsilon
-			|| MathModule::Abs(y - v.y) > Epsilon
-			|| MathModule::Abs(z - v.z) > Epsilon;
+		return MathModule::Abs(x - v.x) > Epsilon || MathModule::Abs(y - v.y) > Epsilon || MathModule::Abs(z - v.z) > Epsilon;
 	}
 
 
@@ -763,9 +757,7 @@ struct Vec3f
 	 */
 	bool operator!=(const Vec3f& v) const
 	{
-		return MathModule::Abs(x - v.x) > Epsilon
-			|| MathModule::Abs(y - v.y) > Epsilon
-			|| MathModule::Abs(z - v.z) > Epsilon;
+		return MathModule::Abs(x - v.x) > Epsilon || MathModule::Abs(y - v.y) > Epsilon || MathModule::Abs(z - v.z) > Epsilon;
 	}
 
 

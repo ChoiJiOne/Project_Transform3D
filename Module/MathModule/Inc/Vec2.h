@@ -699,8 +699,7 @@ struct Vec2f
 	 */
 	bool operator==(Vec2f&& v) noexcept
 	{
-		return MathModule::Abs(x - v.x) <= Epsilon 
-			&& MathModule::Abs(y - v.y) <= Epsilon;
+		return MathModule::Abs(x - v.x) <= Epsilon && MathModule::Abs(y - v.y) <= Epsilon;
 	}
 
 
@@ -713,8 +712,7 @@ struct Vec2f
 	 */
 	bool operator==(const Vec2f& v) noexcept
 	{
-		return MathModule::Abs(x - v.x) <= Epsilon
-			&& MathModule::Abs(y - v.y) <= Epsilon;
+		return MathModule::Abs(x - v.x) <= Epsilon && MathModule::Abs(y - v.y) <= Epsilon;
 	}
 
 
@@ -727,8 +725,7 @@ struct Vec2f
 	 */
 	bool operator!=(Vec2f&& v) noexcept
 	{
-		return MathModule::Abs(x - v.x) > Epsilon
-			|| MathModule::Abs(y - v.y) > Epsilon;
+		return MathModule::Abs(x - v.x) > Epsilon || MathModule::Abs(y - v.y) > Epsilon;
 	}
 
 
@@ -741,8 +738,7 @@ struct Vec2f
 	 */
 	bool operator!=(const Vec2f& v) noexcept
 	{
-		return MathModule::Abs(x - v.x) > Epsilon
-			|| MathModule::Abs(y - v.y) > Epsilon;
+		return MathModule::Abs(x - v.x) > Epsilon || MathModule::Abs(y - v.y) > Epsilon;
 	}
 
 

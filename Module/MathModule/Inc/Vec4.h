@@ -449,7 +449,6 @@ struct Vec4f
 	Vec4f() noexcept : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 
 
-
 	/**
 	 * @brief 4차원 벡터의 생성자입니다.
 	 *
@@ -718,10 +717,7 @@ struct Vec4f
 	 */
 	bool operator==(Vec4f&& v) const
 	{
-		return MathModule::Abs(x - v.x) <= Epsilon
-			&& MathModule::Abs(y - v.y) <= Epsilon
-			&& MathModule::Abs(z - v.z) <= Epsilon
-			&& MathModule::Abs(w - v.w) <= Epsilon;
+		return MathModule::Abs(x - v.x) <= Epsilon && MathModule::Abs(y - v.y) <= Epsilon && MathModule::Abs(z - v.z) <= Epsilon && MathModule::Abs(w - v.w) <= Epsilon;
 	}
 
 
@@ -734,10 +730,7 @@ struct Vec4f
 	 */
 	bool operator==(const Vec4f& v) const
 	{
-		return MathModule::Abs(x - v.x) <= Epsilon
-			&& MathModule::Abs(y - v.y) <= Epsilon
-			&& MathModule::Abs(z - v.z) <= Epsilon
-			&& MathModule::Abs(w - v.w) <= Epsilon;
+		return MathModule::Abs(x - v.x) <= Epsilon && MathModule::Abs(y - v.y) <= Epsilon && MathModule::Abs(z - v.z) <= Epsilon && MathModule::Abs(w - v.w) <= Epsilon;
 	}
 
 
@@ -750,10 +743,7 @@ struct Vec4f
 	 */
 	bool operator!=(Vec4f&& v) const
 	{
-		return MathModule::Abs(x - v.x) > Epsilon
-			|| MathModule::Abs(y - v.y) > Epsilon
-			|| MathModule::Abs(z - v.z) > Epsilon
-			|| MathModule::Abs(w - v.w) > Epsilon;
+		return MathModule::Abs(x - v.x) > Epsilon || MathModule::Abs(y - v.y) > Epsilon || MathModule::Abs(z - v.z) > Epsilon || MathModule::Abs(w - v.w) > Epsilon;
 	}
 
 
@@ -766,10 +756,7 @@ struct Vec4f
 	 */
 	bool operator!=(const Vec4f& v) const
 	{
-		return MathModule::Abs(x - v.x) > Epsilon
-			|| MathModule::Abs(y - v.y) > Epsilon
-			|| MathModule::Abs(z - v.z) > Epsilon
-			|| MathModule::Abs(w - v.w) > Epsilon;
+		return MathModule::Abs(x - v.x) > Epsilon || MathModule::Abs(y - v.y) > Epsilon || MathModule::Abs(z - v.z) > Epsilon || MathModule::Abs(w - v.w) > Epsilon;
 	}
 
 
