@@ -557,6 +557,20 @@ struct Quat
 
 
 	/**
+	 * @brief 쿼터니언의 곱의 역원을 얻습니다.
+	 *
+	 * @param 곱의 역원을 계산할 쿼터니언입니다.
+	 *
+	 * @return 쿼터니언의 곱의 역원을 반환합니다.
+	 */
+	static inline Quat Inverse(const Quat& q)
+	{
+		float invLengthSq = 1.0f / Quat::LengthSq(q);
+		return Quat(-q.x * invLengthSq, -q.y * invLengthSq, -q.z * invLengthSq, q.w * invLengthSq);
+	}
+
+
+	/**
 	 * @brief 쿼터니언의 다양한 원소 형식입니다.
 	 */
 	union
