@@ -2,7 +2,6 @@
 
 #include "Assertion.h"
 #include "GeometryRenderer3D.h"
-#include "RenderModule.h"
 
 GeometryRenderer3D::GeometryRenderer3D() 
 	: Shader("Resource/Shader/GeometryRenderer3D.vert", "Resource/Shader/GeometryRenderer3D.frag")
@@ -54,7 +53,7 @@ void GeometryRenderer3D::DrawPoints3D(const std::vector<Vec3f>& positions, const
 	pointSize_ = pointSize;
 	world_ = Mat4x4::Identity();
 
-	DrawGeometry3D(EDrawType::Points, static_cast<uint32_t>(positions.size()));
+	DrawGeometry3D(EDrawMode::Points, static_cast<uint32_t>(positions.size()));
 }
 
 void GeometryRenderer3D::DrawConnectPoints3D(const std::vector<Vec3f>& positions, const Vec4f& color)
@@ -67,7 +66,7 @@ void GeometryRenderer3D::DrawConnectPoints3D(const std::vector<Vec3f>& positions
 	}
 
 	world_ = Mat4x4::Identity();
-	DrawGeometry3D(EDrawType::LineStrip, static_cast<uint32_t>(positions.size()));
+	DrawGeometry3D(EDrawMode::LineStrip, static_cast<uint32_t>(positions.size()));
 }
 
 void GeometryRenderer3D::DrawLine3D(const Vec3f& fromPosition, const Vec3f& toPosition, const Vec4f& color)
@@ -78,7 +77,7 @@ void GeometryRenderer3D::DrawLine3D(const Vec3f& fromPosition, const Vec3f& toPo
 	vertices_[vertexCount++] = VertexPositionColor3D(toPosition, color);
 
 	world_ = Mat4x4::Identity();
-	DrawGeometry3D(EDrawType::LineStrip, vertexCount);
+	DrawGeometry3D(EDrawMode::LineStrip, vertexCount);
 }
 
 void GeometryRenderer3D::DrawLine3D(const Vec3f& fromPosition, const Vec4f& fromColor, const Vec3f& toPosition, const Vec4f& toColor)
@@ -89,7 +88,7 @@ void GeometryRenderer3D::DrawLine3D(const Vec3f& fromPosition, const Vec4f& from
 	vertices_[vertexCount++] = VertexPositionColor3D(toPosition, toColor);
 
 	world_ = Mat4x4::Identity();
-	DrawGeometry3D(EDrawType::LineStrip, vertexCount);
+	DrawGeometry3D(EDrawMode::LineStrip, vertexCount);
 }
 
 void GeometryRenderer3D::DrawLines3D(const std::vector<Vec3f>& positions, const Vec4f& color)
@@ -102,7 +101,7 @@ void GeometryRenderer3D::DrawLines3D(const std::vector<Vec3f>& positions, const 
 	}
 
 	world_ = Mat4x4::Identity();
-	DrawGeometry3D(EDrawType::Lines, static_cast<uint32_t>(positions.size()));
+	DrawGeometry3D(EDrawMode::Lines, static_cast<uint32_t>(positions.size()));
 }
 
 void GeometryRenderer3D::DrawCube3D(const Mat4x4& world, const Vec3f& extents, const Vec4f& color)
@@ -149,7 +148,7 @@ void GeometryRenderer3D::DrawCube3D(const Mat4x4& world, const Vec3f& extents, c
 	vertices_[vertexCount++] = VertexPositionColor3D(Vec3f(maxPosition.x, minPosition.y, minPosition.z), color);
 
 	world_ = world;
-	DrawGeometry3D(EDrawType::Lines, vertexCount);
+	DrawGeometry3D(EDrawMode::Lines, vertexCount);
 }
 
 void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const Vec4f& color)
@@ -225,7 +224,7 @@ void GeometryRenderer3D::DrawSphere3D(const Mat4x4& world, float radius, const V
 
 
 	world_ = world;
-	DrawGeometry3D(EDrawType::Lines, vertexCount);
+	DrawGeometry3D(EDrawMode::Lines, vertexCount);
 }
 
 void GeometryRenderer3D::DrawGrid3D(const Vec3f& extensions, float stride)
@@ -269,12 +268,12 @@ void GeometryRenderer3D::DrawGrid3D(const Vec3f& extensions, float stride)
 	vertices_[vertexCount++] = VertexPositionColor3D(Vec3f(0.0f, maxYPosition, 0.0f), Vec4f(0.0f, 1.0f, 0.0f, 1.0f));
 
 	world_ = Mat4x4::Identity();
-	DrawGeometry3D(EDrawType::Lines, static_cast<uint32_t>(vertexCount));
+	DrawGeometry3D(EDrawMode::Lines, static_cast<uint32_t>(vertexCount));
 }
 
-void GeometryRenderer3D::DrawGeometry3D(const EDrawType& drawType, uint32_t vertexCount)
+void GeometryRenderer3D::DrawGeometry3D(const EDrawMode& drawMode, uint32_t vertexCount)
 {
-	CHECK(drawType != EDrawType::None);
+	CHECK(drawMode != EDrawMode::None);
 
 	GLboolean originEnableDepth;
 	GL_FAILED(glGetBooleanv(GL_DEPTH_TEST, &originEnableDepth));
@@ -291,13 +290,13 @@ void GeometryRenderer3D::DrawGeometry3D(const EDrawType& drawType, uint32_t vert
 		Shader::SetUniform("view", view_);
 		Shader::SetUniform("projection", projection_);
 
-		if (drawType == EDrawType::Points)
+		if (drawMode == EDrawMode::Points)
 		{
 			Shader::SetUniform("pointSize", pointSize_);
 		}
 
 		GL_FAILED(glBindVertexArray(vertexArrayObject_));
-		GL_FAILED(glDrawArrays(static_cast<GLenum>(drawType), 0, vertexCount));
+		RenderModule::ExecuteDrawVertex(vertexCount, drawMode);
 		GL_FAILED(glBindVertexArray(0));
 
 		Shader::Unbind();

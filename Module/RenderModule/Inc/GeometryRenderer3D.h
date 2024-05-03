@@ -3,6 +3,7 @@
 #include <array>
 #include <vector>
 
+#include "RenderModule.h"
 #include "Shader.h"
 #include "Vertex3D.h"
 #include "VertexBuffer.h"
@@ -140,26 +141,12 @@ public:
 
 private:
 	/**
-	 * @brief 기본 도형의 그리기 타입입니다.
-	 */
-	enum class EDrawType : int32_t
-	{
-		Points      = 0x0000,
-		Lines       = 0x0001,
-		LineStrip   = 0x0003,
-		Triangles   = 0x0004,
-		TriangleFan = 0x0006,
-		None        = 0xFFFF,
-	};
-
-
-	/**
 	 * @brief 3D 기본 도형 그리기를 수행합니다.
 	 * 
-	 * @param drawType 그리기 타입입니다.
+	 * @param drawMode 그리기 타입입니다.
 	 * @param vertexCount 정점 수입니다.
 	 */
-	void DrawGeometry3D(const EDrawType& drawType, uint32_t vertexCount);
+	void DrawGeometry3D(const EDrawMode& drawMode, uint32_t vertexCount);
 
 
 private:
