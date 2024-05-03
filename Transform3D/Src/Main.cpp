@@ -33,7 +33,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 	std::vector<VertexPositionNormalUv3D> vertices;
 	std::vector<uint32_t> indices;
-	GeometryGenerator::CreateCube(Vec3f(2.0f, 2.0f, 2.0f), vertices, indices);
+	GeometryGenerator::CreateSphere(1.0f, 40, vertices, indices);
 
 	StaticMesh<VertexPositionNormalUv3D>* mesh = RenderModule::CreateResource<StaticMesh<VertexPositionNormalUv3D>>(vertices, indices);
 	Shader* shader = RenderModule::CreateResource<Shader>("Resource/Shader/Shader.vert", "Resource/Shader/Shader.frag");
