@@ -14,6 +14,7 @@
 #include "GeometryRenderer3D.h"
 #include "StaticMesh.h"
 #include "Quat.h"
+#include "Transform.h"
 
 int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR pCmdLine, _In_ int32_t nCmdShow)
 {
@@ -36,7 +37,7 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 
 	StaticMesh<VertexPositionNormalUv3D>* mesh = RenderModule::CreateResource<StaticMesh<VertexPositionNormalUv3D>>(vertices, indices);
 	Shader* shader = RenderModule::CreateResource<Shader>("Resource/Shader/Shader.vert", "Resource/Shader/Shader.frag");
-	GeometryRenderer3D* renderer = RenderModule::CreateResource< GeometryRenderer3D>();
+	GeometryRenderer3D* renderer = RenderModule::CreateResource<GeometryRenderer3D>();
 	TileMap* tileMap = RenderModule::CreateResource<TileMap>(TileMap::ESize::Size_512x512, TileMap::ESize::Size_128x128, Vec4f(1.0f, 0.0f, 0.0f, 1.0f), Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
 
 	int32_t screenWidth = 0;
@@ -44,61 +45,80 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	RenderModule::GetScreenSize(screenWidth, screenHeight);
 	float aspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
 	
-	Vec3f extensions = Vec3f(1.0f, 1.0f, 1.0f);
-	Vec4f color = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-	renderer->SetView(Mat4x4::LookAt(Vec3f(10.0f, 10.0f, 10.0f), Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f)));
+	renderer->SetView(Mat4x4::LookAt(Vec3f(0.0f, 5.0f, 10.0f), Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f)));
 	renderer->SetProjection(Mat4x4::Perspective(MathModule::ToRadian(45.0f), aspect, 0.01f, 100.0f));
+	
+	Vec3f position = Vec3f(0.0f, 0.0f, 0.0f);
 
-	Quat q(0.0f, 0.0f, 0.0f, 1.0f);
+	Vec3f axis = Vec3f(0.0f, 0.0f, 0.0f);
+	float radian = 0.0f;
+
+	Vec3f scale = Vec3f(1.0f, 1.0f, 1.0f);
+
+	Transform transform;
 
 	PlatformModule::RunLoop(
 		[&](float deltaSeconds)
-		{		
-			ImGui::Begin("TileMap", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+		{
+			ImGui::Begin("Transform", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 			ImGui::SetWindowPos(ImVec2(10.0f, 10.0f));
-			ImGui::SetWindowSize(ImVec2(400.0f, 100.0f));
-			ImGui::SliderFloat3("extensions", extensions.data, 0.0f, 3.0f);
-			ImGui::ColorEdit4("color", color.data);
-			ImGui::SliderFloat3("v", q.data, -1.0f, 1.0f);
-			ImGui::SliderFloat("w", &q.w, 0.0f, TwoPi);
+			ImGui::SetWindowSize(ImVec2(400.0f, 200.0f));
+
+			ImGui::Text("Position");
+			ImGui::Text("position");
+			ImGui::SameLine();
+			ImGui::SliderFloat3("##position", position.data, -10.0f, 10.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("Reset##position"))
+			{
+				position = Vec3f(0.0f, 0.0f, 0.0f);
+			}
+			ImGui::Separator();
+
+			ImGui::Text("Rotate");
+			ImGui::Text("%-6s", "axis");
+			ImGui::SameLine();
+			ImGui::SliderFloat3("##axis", axis.data, -1.0f, 1.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("Reset##axis"))
+			{
+				axis = Vec3f(0.0f, 0.0f, 0.0f);
+			}
+
+			ImGui::Text("%-6s", "radian");
+			ImGui::SameLine();
+			ImGui::SliderFloat("##radian", &radian, -TwoPi, TwoPi);
+			ImGui::SameLine();
+			if (ImGui::Button("Reset##radian"))
+			{
+				radian = 0.0f;
+			}
+
+			ImGui::Separator();
+
+			ImGui::Text("Scale");
+			ImGui::Text("scale");
+			ImGui::SameLine();
+			ImGui::SliderFloat3("##scale", scale.data, 0.0f, 10.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("Reset##scale"))
+			{
+				scale = Vec3f(1.0f, 1.0f, 1.0f);
+			}
+
 			ImGui::End();
 			
 			RenderModule::SetWindowViewport();
 			RenderModule::BeginFrame(0.3f, 0.3f, 0.3f, 1.0f);
 
-			static float time = 0.0f;
-			time += deltaSeconds;
-
-			//Vec3f x = quat * Vec3f(1.0f, 0.0f, 0.0f);
-			//Vec3f y = quat * Vec3f(0.0f, 1.0f, 0.0f);
-			//Vec3f z = quat * Vec3f(0.0f, 0.0f, 1.0f);
-			Mat4x4 m(
-				 1.0f - 2.0f * q.y * q.y - 2.0f * q.z * q.z,         2.0f * q.x * q.y - 2.0f * q.w * q.z,        2.0f * q.x * q.z + 2.0f * q.w * q.y, 0.0f,
-				        2.0f * q.x * q.y + 2.0f * q.w * q.z,  1.0f - 2.0f * q.x * q.x - 2.0f * q.z * q.z,        2.0f * q.y * q.z - 2.0f * q.w * q.x, 0.0f,
-				        2.0f * q.x * q.z - 2.0f * q.w * q.y,         2.0f * q.y * q.z + 2.0f * q.w * q.x, 1.0f - 2.0f * q.x * q.x - 2.0f * q.y * q.y, 0.0f,
-				0.0f, 0.0f, 0.0f, 1.0f
-
-			);
-
-			m = Mat4x4::Transpose(m);
-
 			renderer->DrawGrid3D(Vec3f(100.0f, 100.0f, 100.0f), 1.0f);
 
-			shader->Bind();
-			{
-				tileMap->Active(0);
+			transform.position = position;
+			transform.rotate = Quat::AxisRadian(axis, radian);
+			transform.scale = scale;
 
-				shader->SetUniform("world", Mat4x4::Identity());
-				shader->SetUniform("view", Mat4x4::LookAt(Vec3f(10.0f, 10.0f, 10.0f), Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f)));
-				shader->SetUniform("projection", Mat4x4::Perspective(MathModule::ToRadian(45.0f), aspect, 0.01f, 100.0f));
+			renderer->DrawSphere3D(Transform::ToMat(transform), 2.0f, Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 
-				mesh->Bind();
-				glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
-				mesh->Unbind();
-			}
-			shader->Unbind();
-			
 			RenderModule::EndFrame();
 		}
 	);
