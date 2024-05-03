@@ -44,9 +44,12 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 	int32_t screenHeight = 0;
 	RenderModule::GetScreenSize(screenWidth, screenHeight);
 	float aspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
+
+	Mat4x4 view = Mat4x4::LookAt(Vec3f(0.0f, 5.0f, 10.0f), Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f));
+	Mat4x4 proj = Mat4x4::Perspective(MathModule::ToRadian(45.0f), aspect, 0.01f, 100.0f);
 	
-	renderer->SetView(Mat4x4::LookAt(Vec3f(0.0f, 5.0f, 10.0f), Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f)));
-	renderer->SetProjection(Mat4x4::Perspective(MathModule::ToRadian(45.0f), aspect, 0.01f, 100.0f));
+	renderer->SetView(view);
+	renderer->SetProjection(proj);
 	
 	Vec3f position = Vec3f(0.0f, 0.0f, 0.0f);
 
@@ -117,8 +120,21 @@ int32_t WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstan
 			transform.rotate = Quat::AxisRadian(axis, radian);
 			transform.scale = scale;
 
-			renderer->DrawSphere3D(Transform::ToMat(transform), 2.0f, Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
+			renderer->DrawCube3D(Mat4x4::Identity(), Vec3f(2.0f, 2.0f, 2.0f), Vec4f(0.0f, 0.0f, 1.0f, 1.0f));
+			shader->Bind();
+			{
+				tileMap->Active(0);
 
+				shader->SetUniform("world", Transform::ToMat(transform));
+				shader->SetUniform("view", view);
+				shader->SetUniform("projection", proj);
+
+				mesh->Bind();
+				glDrawElements(GL_TRIANGLES, mesh->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+				mesh->Unbind();
+			}
+			shader->Unbind();
+	
 			RenderModule::EndFrame();
 		}
 	);
