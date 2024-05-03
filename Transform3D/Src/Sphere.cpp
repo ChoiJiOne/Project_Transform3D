@@ -5,7 +5,8 @@
 #include "Sphere.h"
 
 Sphere::Sphere(MeshRenderer* renderer)
-	: windowFlags_(static_cast<ImGuiWindowFlags_>(ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse))
+	: renderer_(renderer)
+	, windowFlags_(static_cast<ImGuiWindowFlags_>(ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse))
 {
 	location_ = ImVec2(10.0f, 10.0f);
 	size_ = ImVec2(400.0f, 200.0f);
