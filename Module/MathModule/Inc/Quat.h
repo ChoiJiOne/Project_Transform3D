@@ -674,7 +674,7 @@ struct Quat
 	static inline Quat Pow(const Quat& q, const float power)
 	{
 		float radian = Quat::Radian(q);
-		Vec3f axis = Vec3f::Normalize(Quat::Axis(q));
+		Vec3f axis = Quat::Axis(q);
 
 		float c = MathModule::Cos(power * radian * 0.5f);
 		float s = MathModule::Sin(power * radian * 0.5f);
