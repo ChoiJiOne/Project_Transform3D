@@ -255,6 +255,16 @@ const wchar_t* RenderModule::GetLastErrorMessage()
 	return lastErrorMessage;
 }
 
+void RenderModule::ExecuteDrawVertex(uint32_t vertexCount, const EDrawMode& drawMode)
+{
+	GL_FAILED(glDrawArrays(static_cast<GLenum>(drawMode), 0, vertexCount));
+}
+
+void RenderModule::ExecuteDrawIndex(uint32_t indexCount, const EDrawMode& drawMode)
+{
+	GL_FAILED(glDrawElements(static_cast<GLenum>(drawMode), indexCount, GL_UNSIGNED_INT, nullptr));
+}
+
 void RenderModule::SetLastErrorMessage(const std::wstring& message)
 {
 	std::copy(message.begin(), message.end(), lastErrorMessage);

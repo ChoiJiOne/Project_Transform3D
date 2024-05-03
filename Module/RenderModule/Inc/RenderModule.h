@@ -23,6 +23,20 @@
 
 
 /**
+ * @brief 기본 도형의 그리기 모드입니다.
+ */
+enum class EDrawMode : int32_t
+{
+	Points      = 0x0000,
+	Lines       = 0x0001,
+	LineStrip   = 0x0003,
+	Triangles   = 0x0004,
+	TriangleFan = 0x0006,
+	None        = 0xFFFF,
+};
+
+
+/**
  * @brief 렌더링 관련 처리를 수행하는 모듈입니다.
  *
  * @note 이 클래스의 모든 멤버 변수와 메서드는 모두 정적(static) 타입입니다.
@@ -265,6 +279,24 @@ public:
 	 * @return 렌더 모듈의 가장 최근에 발생한 에러 메시지의 포인터 값을 반환합니다.
 	 */
 	static const wchar_t* GetLastErrorMessage();
+
+
+	/**
+	 * @brief 파이프라인에 바인딩된 리소스를 기반으로 그리기를 수행합니다.
+	 * 
+	 * @param vertexCount 그리기 수행 시 참조할 버텍스 버퍼의 수입니다.
+	 * @param drawMode 그리기 모드입니다.
+	 */
+	static void ExecuteDrawVertex(uint32_t vertexCount, const EDrawMode& drawMode);
+
+
+	/**
+	 * @brief 파이프라인에 바인딩된 리소스를 기반으로 그리기를 수행합니다.
+	 * 
+	 * @param indexCount 그리기 수행 시 참조할 인덱스 버퍼의 수입니다.
+	 * @param drawMode 그리기 모드입니다.
+	 */
+	static void ExecuteDrawIndex(uint32_t indexCount, const EDrawMode& drawMode);
 
 
 private:
