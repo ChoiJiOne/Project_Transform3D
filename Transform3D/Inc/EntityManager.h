@@ -59,8 +59,6 @@ public:
 	template <typename TEntity, typename... Args>
 	EntityID CreateID(Args&&... args)
 	{
-		CHECK(0 <= cacheSize_ && cacheSize_ < MAX_RESOURCE_SIZE);
-
 		EntityID entityID = -1;
 		for (int32_t index = 0; index < cacheSize_; ++index)
 		{
@@ -93,8 +91,6 @@ public:
 	template <typename TEntity, typename... Args>
 	TEntity* CreateEntity(Args&&... args)
 	{
-		CHECK(0 <= cacheSize_ && cacheSize_ < MAX_RESOURCE_SIZE);
-
 		EntityID entityID = -1;
 		for (int32_t index = 0; index < cacheSize_; ++index)
 		{
@@ -127,12 +123,7 @@ public:
 	template <typename TEntity>
 	TEntity* GetEntity(const EntityID& entityID)
 	{
-		CHECK(0 <= entityID && entityID < cacheSize_);
-
-		TEntity* entity = reinterpret_cast<TEntity*>(cache_[entityID].get());
-		CHECK(entity != nullptr);
-
-		return entity;
+		return reinterpret_cast<TEntity*>(cache_[entityID].get());
 	}
 
 
