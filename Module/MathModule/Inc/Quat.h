@@ -503,7 +503,14 @@ struct Quat
 	 */
 	static inline Quat Normalize(const Quat& q)
 	{
-		float invLength = 1.0f / Quat::Length(q);
+		float length = Quat::Length(q);
+
+		if (MathModule::NearZero(length))
+		{
+			return Quat();
+		}
+
+		float invLength = 1.0f / length;
 		return Quat(q.x * invLength, q.y * invLength, q.z * invLength, q.w * invLength);
 	}
 
