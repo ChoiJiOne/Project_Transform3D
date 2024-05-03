@@ -845,7 +845,14 @@ struct Vec3f
 	 */
 	static inline Vec3f Normalize(const Vec3f& v)
 	{
-		float invLength = 1.0f / Length(v);
+		float length = Length(v);
+		
+		if (MathModule::NearZero(length))
+		{
+			return v;
+		}
+
+		float invLength = 1.0f / length;
 		return Vec3f(v.x * invLength, v.y * invLength, v.z * invLength);
 	}
 

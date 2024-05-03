@@ -824,7 +824,14 @@ struct Vec2f
 	 */
 	static inline Vec2f Normalize(const Vec2f& v)
 	{
-		float invLength = 1.0f / Length(v);
+		float length = Length(v);
+
+		if (MathModule::NearZero(length))
+		{
+			return v;
+		}
+
+		float invLength = 1.0f / length;
 		return Vec2f(v.x * invLength, v.y * invLength);
 	}
 
