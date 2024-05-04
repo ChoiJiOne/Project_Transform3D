@@ -43,7 +43,7 @@ public:
 	 *
 	 * @param deltaSeconds 델타 시간 값입니다.
 	 */
-	virtual void Tick(float deltaSeconds);
+	virtual void Tick(float deltaSeconds) override;
 
 
 	/**
