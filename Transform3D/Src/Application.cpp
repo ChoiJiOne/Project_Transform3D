@@ -2,6 +2,7 @@
 #include "MeshRenderer.h"
 
 #include "Application.h"
+#include "Camera.h"
 #include "EntityManager.h"
 #include "Grid.h"
 #include "Sphere.h"
@@ -35,26 +36,15 @@ void Application::Init()
 	geometryRenderer_ = RenderModule::CreateResource<GeometryRenderer3D>();
 	meshRenderer_ = RenderModule::CreateResource<MeshRenderer>();
 
-	int32_t screenWidth = 0;
-	int32_t screenHeight = 0;
-	RenderModule::GetScreenSize(screenWidth, screenHeight);
-	float aspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
-
-	Mat4x4 view = Mat4x4::LookAt(Vec3f(0.0f, 5.0f, 10.0f), Vec3f(0.0f, 0.0f, 0.0f), Vec3f(0.0f, 1.0f, 0.0f));
-	Mat4x4 proj = Mat4x4::Perspective(PiDiv4, aspect, 0.01f, 100.0f);
-
-	geometryRenderer_->SetView(view);
-	geometryRenderer_->SetProjection(proj);
-
-	meshRenderer_->SetView(view);
-	meshRenderer_->SetProjection(proj);
-
 	EntityManager::Get().Startup();
+
+	camera_ = EntityManager::Get().CreateEntity<Camera>();
 
 	entities_ = 
 	{
+		camera_,
 		EntityManager::Get().CreateEntity<Grid>(geometryRenderer_),
-		EntityManager::Get().CreateEntity<Sphere>(meshRenderer_),
+		EntityManager::Get().CreateEntity<Sphere>(meshRenderer_, camera_),
 	};
 }
 
@@ -67,6 +57,12 @@ void Application::Run()
 			{
 				entity->Tick(deltaSeconds);
 			}
+
+			geometryRenderer_->SetView(camera_->GetView());
+			geometryRenderer_->SetProjection(camera_->GetProjection());
+
+			meshRenderer_->SetView(camera_->GetView());
+			meshRenderer_->SetProjection(camera_->GetProjection());
 
 			RenderModule::SetWindowViewport();
 			RenderModule::BeginFrame(0.3f, 0.3f, 0.3f, 1.0f);

@@ -10,6 +10,7 @@
 
 class GeometryRenderer3D;
 class MeshRenderer;
+class Camera;
 
 
 /**
@@ -62,7 +63,13 @@ private:
 
 
 	/**
+	 * @brief 카메라 엔티티입니다.
+	 */
+	Camera* camera_ = nullptr;
+
+
+	/**
 	 * @brief 어플리케이션 내의 엔티티입니다.
 	 */
-	std::array<IEntity*, 2> entities_;
+	std::array<IEntity*, 3> entities_;
 };
