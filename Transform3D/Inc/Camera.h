@@ -79,6 +79,14 @@ public:
 	const Mat4x4& GetProjection() const { return projection_; }
 
 
+	/**
+	 * @brief 카메라 엔티티의 활성화 여부를 설정합니다.
+	 * 
+	 * @param active 카메라 엔티티의 활성화 여부입니다.
+	 */
+	void SetActive(bool active) { bIsActive_ = active; }
+
+
 private:
 	/**
 	 * @brief 카메라의 상태를 업데이트합니다.
@@ -171,4 +179,10 @@ private:
 	 * @brief X축 오일러 회전 각도입니다.
 	 */
 	float pitch_ = 0.0f;
+
+
+	/**
+	 * @brief 카메라가 활성화되었는지 확인합니다.
+	 */
+	bool bIsActive_ = true;
 };

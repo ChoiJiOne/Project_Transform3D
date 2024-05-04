@@ -32,6 +32,11 @@ Camera::~Camera()
 
 void Camera::Tick(float deltaSeconds)
 {
+	if (!bIsActive_)
+	{
+		return;
+	}
+
 	bool bIsUpdateState = false;
 
 	if (InputController::GetKeyPressState(EKey::KEY_LBUTTON) == EPressState::HELD)
