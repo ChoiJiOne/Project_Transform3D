@@ -10,6 +10,7 @@
 #include "IEntity.h"
 
 class MeshRenderer;
+class Camera;
 
 
 /**
@@ -22,8 +23,9 @@ public:
 	 * @brief 구(Sphere) 엔티티의 생성자입니다.
 	 *
 	 * @param renderer 구를 렌더링할 때 참조할 렌더러입니다.
+	 * @param camera 카메라입니다.
 	 */
-	Sphere(MeshRenderer* renderer);
+	Sphere(MeshRenderer* renderer, Camera* camera);
 
 
 	/**
@@ -123,4 +125,10 @@ private:
 	 * @brief 구 렌더링 시 참조할 렌더러입니다.
 	 */
 	MeshRenderer* renderer_ = nullptr;
+
+
+	/**
+	 * @brief 카메라입니다.
+	 */
+	Camera* camera_ = nullptr;
 };

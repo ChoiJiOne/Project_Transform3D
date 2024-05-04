@@ -2,10 +2,12 @@
 #include "RenderModule.h"
 #include "MeshRenderer.h"
 
+#include "Camera.h"
 #include "Sphere.h"
 
-Sphere::Sphere(MeshRenderer* renderer)
+Sphere::Sphere(MeshRenderer* renderer, Camera* camera)
 	: renderer_(renderer)
+	, camera_(camera)
 	, windowFlags_(static_cast<ImGuiWindowFlags_>(ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse))
 {
 	location_ = ImVec2(10.0f, 10.0f);
@@ -32,6 +34,8 @@ void Sphere::Tick(float deltaSeconds)
 	ImGui::Begin("Transform", nullptr, windowFlags_);
 	ImGui::SetWindowPos(location_);
 	ImGui::SetWindowSize(size_);
+	
+	camera_->SetActive(!ImGui::IsWindowFocused());
 
 	ImGui::Text("Position");
 	ImGui::Text("position");
