@@ -12,3 +12,13 @@
 - [CMake 3.27 or later](https://cmake.org/download/)
 - [NSIS 3.09 or later](https://nsis.sourceforge.io/Download)
 
+<br><br>
+
+
+## How to get repository clone?
+
+`CMD` 혹은 `PowerShell`에서 다음 명령어를 수행하시면 리포지토리의 복사본을 얻을 수 있습니다.
+
+```PowerShell
+git clone https://github.com/ChoiJiOne/Project_Transform3D --single-branch -b 0.0
+```
