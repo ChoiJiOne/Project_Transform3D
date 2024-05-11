@@ -4,9 +4,10 @@
 
 
 ## Version
-- [0.0](https://github.com/ChoiJiOne/Project_Transform3D/tree/0.0)
 
-  ![0.0](https://github.com/ChoiJiOne/Project_Transform3D/blob/0.0/Image/animation.gif)
+| Version | Preview |
+| :---: | :---: |
+| [0.0](https://github.com/ChoiJiOne/Project_Transform3D/tree/0.0) | ![0.0](https://github.com/ChoiJiOne/Project_Transform3D/blob/0.0/Image/animation.gif)  |
 
 <br><br>
 
